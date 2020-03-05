@@ -5,6 +5,7 @@ import requests
 import json
 import covid19.config
 from covid19.config import slack_sandiego_post_url
+from datetime import datetime as dt
 
 class sandiegoSpider(scrapy.Spider):
     name = 'sandiego'
@@ -22,7 +23,8 @@ class sandiegoSpider(scrapy.Spider):
                 cells = row.xpath("td//text()")
                 update_date_text = "".join([i.extract() for i in cells])
                 date = update_date_text[update_date_text.find("Updated ") + len("Updated"):].strip()
-                item["date"] = date
+                date = dt.strptime(date, "%B %d, %Y")
+                item["date"] = date.strftime("%Y-%m-%d %H:%M %p")
             elif ind >= 2:      # Case counts
                 for cell_ind, cell in enumerate(row.xpath("td//text()").extract()[1:]):
                     if self.objs[cell_ind] not in item.keys():

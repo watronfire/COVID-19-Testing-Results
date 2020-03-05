@@ -7,6 +7,7 @@
 
 import scrapy
 from functools import reduce
+from datetime import datetime as dt
 
 class CasesCategory(scrapy.Item):
     positive = scrapy.Field(serialier = int)
@@ -21,6 +22,7 @@ class TestingStats(scrapy.Item):
     Local = scrapy.Field(serializer = CasesCategory)
     FederalQuarantine = scrapy.Field(serializer = CasesCategory)
     NonLocal = scrapy.Field(serializer = CasesCategory)
+    Combined = scrapy.Field(serializer = CasesCategory)
 
     def getTotal(self, key = "positive"):
         categories = sorted([i for i in self.keys() if i!= "date"])
@@ -43,7 +45,7 @@ class TestingStats(scrapy.Item):
         rows[0].extend([self[i]["name"] for i in categories])
         rows.extend([[i.capitalize()] + [self[j][i] if j in self.keys() and i in self[j].keys() else "NA" for j in categories] for i in case_categories])
         rows.append(["Total"] + [self.getCategoryTotal(j) for j in categories])
-        row_str = "Last updated: {}".format(self["date"])
+        row_str = "Last updated: {}".format(dt.strftime(dt.strptime(self["date"], "%Y-%m-%d %H:%M %p"), "%Y-%m-%d"))
         row_str += "\n```\n"
         for i in rows:
             print(i)
