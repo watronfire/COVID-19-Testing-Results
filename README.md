@@ -6,7 +6,7 @@
 
 ## Configuration
 
-1. Add Config file (./covid19/config.py) to post ascii tables to URLs (Use case: Slack bot).
+1. Add config file (./covid19/config.py) to post ascii tables to URLs (Use case: Slack bot).
 
 ```
 slack_sandiego_post_url = "<post-url>"
