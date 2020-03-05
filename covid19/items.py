@@ -53,28 +53,3 @@ class TestingStats(scrapy.Item):
         row_str += "```\n"
         row_str += "Total cases: {}".format(self.getTotal())
         return row_str
-
-class CanadaCovid19Stats( scrapy.Item ):
-    date = scrapy.Field()
-    BritishColumbia = scrapy.Field( serializer = CasesCategory )
-    Ontario = scrapy.Field( serializer = CasesCategory )
-
-    def getTotal( self, key ):
-        if self[key]["pending"] == "Unknown":
-            return int( self[key]["positive"] ) + int( self[key]["negative"] )
-        else:
-            return int( self[key]["positive"] ) + int( self[key]["pending"] ) + int( self[key]["negative"] )
-
-    def toAsciiTable( self ):
-        row_format = "|{:^30}" * 3 + "|\n"
-        rows = []
-        rows.append( ["", self["BritishColumbia"]["name"], self["Ontario"]["name"]] )
-        rows.extend( [[i.capitalize(), self["BritishColumbia"][i], self["Ontario"][i]] for i in ["positive", "pending", "negative"]] )
-        rows.append( ["Total", self.getTotal( "BritishColumbia" ), self.getTotal( "Ontario" )] )
-        row_str = "Last updated: {}".format( self["date"] )
-        row_str += "\n```\n"
-        for i in rows:
-            row_str += row_format.format( *i )
-        row_str += "```\n"
-        row_str += "Total cases: {}".format( sum( [self.getTotal("BritishColumbia"), self.getTotal("Ontario")] ) )
-        return row_str
