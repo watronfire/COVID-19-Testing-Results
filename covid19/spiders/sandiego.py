@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from covid19.items import SanDiegoCovid19Stats
+from covid19.items import TestingStats
 import requests
 import json
 import covid19.config
@@ -10,13 +10,13 @@ class sandiegoSpider(scrapy.Spider):
     name = 'sandiego'
     allowed_domains = ['www.sandiegocounty.gov']
     start_urls = ['https://www.sandiegocounty.gov/content/sdc/hhsa/programs/phs/community_epidemiology/dc/2019-nCoV.html']
-    objs = ["SanDiegoCounty", "FederalQuarantine", "NonSanDiegoCounty"]
+    objs = ["Local", "FederalQuarantine", "NonLocal"]
     case_categories = ["positive", "pending", "negative"]
     names = ["San Diego County", "Federal Quarantine", "Non-San Diego County Residents"]
     
     def parse(self, response):
         cases_table = response.xpath("//table/tbody")
-        item = SanDiegoCovid19Stats()
+        item = TestingStats()
         for ind, row in enumerate(cases_table[0].xpath("tr")[:-2]):
             if ind == 0:        # Updated date
                 cells = row.xpath("td//text()")
