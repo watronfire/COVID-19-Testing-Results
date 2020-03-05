@@ -11,7 +11,7 @@ class sandiegoSpider(scrapy.Spider):
     allowed_domains = ['www.sandiegocounty.gov']
     start_urls = ['https://www.sandiegocounty.gov/content/sdc/hhsa/programs/phs/community_epidemiology/dc/2019-nCoV.html']
     objs = ["Local", "FederalQuarantine", "NonLocal"]
-    case_categories = ["positive", "pending", "negative"]
+    case_categories = ["positive", "presumedPositive", "pending", "negative"]
     names = ["San Diego County", "Federal Quarantine", "Non-San Diego County Residents"]
     
     def parse(self, response):
