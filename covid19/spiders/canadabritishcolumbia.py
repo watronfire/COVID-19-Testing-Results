@@ -8,8 +8,8 @@ from datetime import datetime as dt
 class CanadaBritishColumbiaSpider( scrapy.Spider ) :
 
     name = "canadabritishcolumbia"
-    allowed_domains = ["http://www.bccdc.ca/", "https://www.publichealthontario.ca"]
-    obj = ["BritishColumbia", "Ontario"]
+    allowed_domains = ["http://www.bccdc.ca/"]
+    obj = ["BritishColumbia"]
     case_categories = ["positive", "pending", "negative"]
     names = ["British Columbia, CAN" ]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
