@@ -44,8 +44,3 @@ class WashingtonSpider( scrapy.Spider ):
 
         print( item.toAsciiTable() )
         return item
-
-process = CrawlerProcess()
-process.crawl(WashingtonSpider)
-process.start()
-process.stop()
