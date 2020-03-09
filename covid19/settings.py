@@ -11,7 +11,7 @@
 
 BOT_NAME = 'covid19'
 
-SPIDER_MODULES = ['covid19.spiders']
+SPIDER_MODULES = ['covid19.spiders', 'covid19.spiders.international', 'covid19.spiders.usa']
 NEWSPIDER_MODULE = 'covid19.spiders'
 
 

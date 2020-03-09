@@ -11,7 +11,7 @@ class WashingtonSpider( scrapy.Spider ):
     name = "washington"
     allowed_domains = ['https://www.snohd.org']
     names = ["Snohomish County"]
-    case_categories = ["positive", "probable", "negative", "pending"]
+    case_categories = ["positive", "presumedPositive", "negative", "pending"]
     custom_settings = {"LOG_LEVEL" : logging.ERROR }
 
     def start_requests(self):
@@ -26,13 +26,13 @@ class WashingtonSpider( scrapy.Spider ):
         date = date.split( ": " )[1]
         date = date.replace( ".", "" )
         date = date.upper()
-        date = dt.strptime( date, "%I %p %m/%d/%y" )
+        date = dt.strptime( date, "%I:%M %p %m/%d/%y" )
 
         case_table = response.xpath( '/html/body/div[4]/div/div[2]/div[2]/div/div[1]/div[3]/div/div/div/div/div[1]/div/div[2]/div[1]/div/div[1]/div/div[3]/div/div/section/div/table/tbody' )
         for i, row in enumerate( case_table.xpath( 'tr' ) ):
 
             value = row.xpath( 'td[2]/text()' ).get()
-            print( "{},{}".format( row.xpath( 'td[1]/text()' ).get(), value ) )
+            #print( "{},{}".format( row.xpath( 'td[1]/text()' ).get(), value ) )
             item_dict[self.case_categories[i]] = int( value )
 
         # Snohomish County seperates presumed positive cases from probably cases based on source of the initial positive

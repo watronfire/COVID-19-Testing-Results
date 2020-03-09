@@ -9,7 +9,7 @@ import json
 from datetime import datetime as dt
 
 class CanadaNationalSpider( scrapy.Spider ):
-    name = "canadaonational"
+    name = "canadanational"
     allowed_domains = ["https://www.canada.ca"]
     obj = ["CanadaNational"]
     case_categories = ["positive", "negative"]
