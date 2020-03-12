@@ -32,6 +32,7 @@ class sandiegoSpider(scrapy.Spider):
                             "name": self.names[cell_ind]
                         }
                     item[self.objs[cell_ind]][self.case_categories[ind - 2]] = cell
-        res = requests.post(slack_sandiego_post_url, data = json.dumps({"text": item.toAsciiTable()}), headers = {"Content-type": "application/json"})
-        self.logger.info("Reuest response: {}".format(res.text))
+        #res = requests.post(slack_sandiego_post_url, data = json.dumps({"text": item.toAsciiTable()}), headers = {"Content-type": "application/json"})
+        #self.logger.info("Reuest response: {}".format(res.text))
+        print( item )
         return item

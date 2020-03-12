@@ -7,28 +7,28 @@ import logging
 import requests
 import json
 
-class WashingtonSpider( scrapy.Spider ):
-    name = "washington"
-    allowed_domains = ['http://www.doh.wa.gov/']
-    names = ["Washington State"]
-    case_categories = ["positive", "negative"]
+class SnohomishSpider( scrapy.Spider ):
+    name = "snohomish"
+    allowed_domains = ['https://www.snohd.org']
+    names = ["Snohomish County"]
+    case_categories = ["positive", "presumedPositive", "negative", "pending"]
     custom_settings = {"LOG_LEVEL" : logging.ERROR }
 
     def start_requests(self):
-        yield scrapy.Request( "http://www.doh.wa.gov/Emergencies/Coronavirus", callback=self.parse )
+        yield scrapy.Request( "https://www.snohd.org/484/Novel-Coronavirus-2019", callback=self.parse )
 
     def parse( self, response ):
         item = TestingStats()
 
         item_dict = { "name" : self.names[0] }
 
-        date = response.xpath( '/html/body/form/div[3]/div/div/div[3]/section/main/div[4]/div/div/div[7]/div[1]/div/div[1]/div/div[2]/div/div/div/div[6]/p[4]/em/text()' ).get()
+        date = response.xpath( '/html/body/div[4]/div/div[2]/div[2]/div/div[1]/div[3]/div/div/div/div/div[1]/div/div[2]/div[1]/div/div[1]/div/div[3]/div/div/section/div/table/thead/tr/th[2]/text()' ).get()
         date = date.split( ": " )[1]
         date = date.replace( ".", "" )
         date = date.upper()
-        date = dt.strptime( date, "%B %d, %Y at %I:%M %p" )
+        date = dt.strptime( date, "%I:%M %p %m/%d/%Y" )
 
-        case_table = response.xpath( '/html/body/form/div[3]/div/div/div[3]/section/main/div[4]/div/div/div[7]/div[1]/div/div[1]/div/div[2]/div/div/div/div[6]/table[4]/tbody' )
+        case_table = response.xpath( '/html/body/div[4]/div/div[2]/div[2]/div/div[1]/div[3]/div/div/div/div/div[1]/div/div[2]/div[1]/div/div[1]/div/div[3]/div/div/section/div/table/tbody' )
         for i, row in enumerate( case_table.xpath( 'tr' ) ):
 
             value = row.xpath( 'td[2]/text()' ).get()

@@ -20,10 +20,12 @@ class NewMexicoSpider( scrapy.Spider ) :
 
     def parse( self, response ):
         item = TestingStats()
-        confirmed = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/text()" ).get()
-        negative = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[2]/td[2]/text()" ).get()
-        total = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[3]/td[2]/text()" ).get()
-        confirmed = int( confirmed )
+        presumedPositive = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/text()" ).get()
+        positive = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[2]/td[2]/text()" ).get()
+        negative = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[3]/td[2]/text()" ).get()
+        total = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td[2]/text()" ).get()
+        presumedPositive = int( presumedPositive )
+        positive = int( positive )
         negative = int( negative )
         total = int( total )
 
@@ -34,8 +36,9 @@ class NewMexicoSpider( scrapy.Spider ) :
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
         item["Local"] = { "name" : self.names[0],
-                          "positive" : confirmed,
+                          "presumedPositive" : presumedPositive,
+                          "positive" : positive,
                           "negative" : negative,
-                          "pending" : total - ( confirmed + negative )}
+                          "pending" : total - ( positive + negative + presumedPositive )}
         print( item.toAsciiTable() )
         return item

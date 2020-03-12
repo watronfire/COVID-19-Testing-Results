@@ -25,7 +25,8 @@ class CanadaNationalSpider( scrapy.Spider ):
         item = TestingStats()
         item_dict = { "name" : self.names[0] }
 
-        date = response.xpath( '/html/body/main/div[3]/p[14]/text()' ).get()
+        date = response.xpath( '/html/body/main/div[3]/p[17]/text()' ).get()
+        print( "date" )
         date = date.split( ", the" )[0].replace( u"\xa0", " " )
 
         date = dt.strptime( date, "As of %B %d, %Y" )

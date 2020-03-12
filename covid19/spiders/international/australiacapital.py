@@ -5,7 +5,7 @@ import requests
 import json
 from datetime import datetime as dt
 
-class CanadaBritishColumbiaSpider( scrapy.Spider ) :
+class AustraliaSpider( scrapy.Spider ) :
 
     name = "australiacaptital"
     allowed_domains = ["https://health.act.gov.au"]
@@ -16,24 +16,20 @@ class CanadaBritishColumbiaSpider( scrapy.Spider ) :
 
 
     def start_requests( self ):
-        yield scrapy.Request( "http://www.bccdc.ca/about/news-stories/stories/2020/information-on-novel-coronavirus", callback=self.parse )
+        yield scrapy.Request( "https://health.act.gov.au/public-health-alert/updated-information-about-covid-19", callback=self.parse )
 
     def parse( self, response ):
         item = TestingStats()
-        confirmed_paragraph = response.xpath( '//*[@id="ctl00_PlaceHolderMain_SubPlaceholder_ctl07__ControlWrapper_RichHtmlField"]/div[1]/div[1]/ul/li[1]/text()' ).get()
-        totals_paragraph = response.xpath( '//*[@id="ctl00_PlaceHolderMain_SubPlaceholder_ctl07__ControlWrapper_RichHtmlField"]/div[1]/div[1]/ul/li[2]/p/text()' ).get()
-        totals_paragraph = totals_paragraph.replace(u'\xa0', ' ')
-        confirmed = confirmed_paragraph.split( " " )[0]
-        confirmed = int( confirmed.split( "\xa0" )[0] )
-        total_tested = int( totals_paragraph.split( " " )[0].replace( ",", "" ) )
-        print( totals_paragraph[:-2].split( " " ) )
-        date =  " ".join( totals_paragraph[:-2].split( " " )[8:11] )
-        print( date )
-        date = dt.strptime( date, "%B %d, %Y" )
+        positive = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div[1]/ul/li[1]/span/text()' ).get()
+        negative = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div[1]/ul/li[2]/span/b/text()' ).get()
+
+        date = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div[1]/p/strong/text()' ).get()
+        date = dt.strptime( date, "%d\xa0%B %Y, current as at %I.%M%p AEDT" )
+
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
         item["Local"] = { "name" : self.names[0],
-                          "positive" : confirmed,
-                          "negative" : total_tested - confirmed }
+                          "positive" : positive,
+                          "negative" : negative }
         print( item.toAsciiTable() )
         return item

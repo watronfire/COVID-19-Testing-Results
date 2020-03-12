@@ -33,4 +33,5 @@ class NewyorkSpider(scrapy.Spider):
             "name": "New York State (Total)",
             "pui": pui
         }
+        print( item.toAsciiTable() )
         return item

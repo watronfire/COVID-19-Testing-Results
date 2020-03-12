@@ -1,38 +1,53 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from covid19.items import TestingStats
-import requests
-import json
-import covid19.config
-from covid19.config import slack_sandiego_post_url
 from datetime import datetime as dt
+import logging
 
 class FloridaSpider(scrapy.Spider):
     name = 'florida'
-    allowed_domains = ['www.floridahealth.gov']
-    start_urls = ["http://www.floridahealth.gov/diseases-and-conditions/COVID-19/_documents/covid19-daily-numbers.txt"]
-    # Ajax request from http://www.floridahealth.gov/diseases-and-conditions/COVID-19/index.html
+    allowed_domains = ['http://www.floridahealth.gov/']
+    names = ["Florida State"]
+    case_categories = ["positive", "negative", "pending", "pui"]
+    custom_settings = {"LOG_LEVEL" : logging.ERROR }
+
+    def start_requests( self ):
+        yield scrapy.Request( "http://www.floridahealth.gov/diseases-and-conditions/COVID-19/", callback=self.parse )
 
     def parse(self, response):
-        text = response.text
         item = TestingStats()
-        split_text = text.split("*")
-        date = split_text[0]
-        date = dt.strptime(date.replace("p.m.", "PM"), "%H:%M %p ET %d/%m/%Y")
+
+        date = response.xpath( '/html/body/div[1]/div[3]/div/div[2]/div[3]/div/div[1]/block/p[1]/sup/text()' ).get()
+        date = date.replace( ".", "" )
+        date = dt.strptime( date, "as of %I:%M %p ET %m/%d/%Y")
+
+        positive = response.xpath( '/html/body/div[1]/div[3]/div/div[2]/div[3]/div/div[1]/block/div[1]/text()' ).get()
+        positive = int( positive.split( " " )[0] )
+
+        nonlocal_positive = response.xpath( '/html/body/div[1]/div[3]/div/div[2]/div[3]/div/div[1]/block/div[3]/text()' ).get()
+        nonlocal_positive = int( nonlocal_positive.split( " " )[0] )
+
+        negative = response.xpath( '/html/body/div[1]/div[3]/div/div[2]/div[3]/div/div[1]/block/div[5]/text()' )
+        negative = int( negative.get() )
+
+        pending = response.xpath( '/html/body/div[1]/div[3]/div/div[2]/div[3]/div/div[1]/block/div[6]/text()' )
+        pending = int( pending.get() )
+
+        pui = response.xpath( '/html/body/div[1]/div[3]/div/div[2]/div[3]/div/div[1]/block/div[7]/text()' ).get()
+        pui = int( pui.split( " " )[0] )
+
         item["date"] = date.strftime("%Y-%m-%d %H:%M %p")
         item["Local"] = {
             "name": "Florida",
-            "positive": split_text[1],
-            "presumedPositive": split_text[2],
-            "pending": split_text[3],
-            "negative": split_text[4],
-            "pui": split_text[5]
+            "positive": positive,
+            "pending": pending,
+            "negative": negative,
+            "pui": pui
         }
         item["NonLocal"] = {
             "name": "Non Florida",
-            "positive": split_text[-4],
-            "presumedPositive": split_text[-3]
+            "positive": nonlocal_positive
         }
-        print(item.toAsciiTable())
+        print( item.toAsciiTable() )
         return item
 

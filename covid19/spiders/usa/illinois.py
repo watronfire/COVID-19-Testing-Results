@@ -10,7 +10,7 @@ class IllinoisSpider( scrapy.Spider ) :
     name = "illinois"
     allowed_domains = ["http://www.dph.illinois.gov/"]
     obj = ["Illinois"]
-    case_categories = ["positive", "presumedPositive", "negative", "pending", "pui" ]
+    case_categories = ["positive", "negative", "pending", "pui" ]
     names = ["Illinois" ]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
@@ -24,12 +24,12 @@ class IllinoisSpider( scrapy.Spider ) :
 
         results = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/table/tbody' )
 
-        for i, row in enumerate( results.xpath( "tr" ) ):
+        for i, row in enumerate( results.xpath( "tr" )[:-1] ):
             value = row.xpath( "td/text()" ).get()
             print( "{},{}".format( value, self.case_categories[i] ) )
             item_dict[self.case_categories[i]] = int( value )
 
-        date = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/p[1]/text()[1]' ).get()
+        date = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/p[6]/text()[1]' ).get()
         date = date.split( " " )[-3:]
         date = " ".join( date )
         date = dt.strptime( date, "%B %d, %Y." )

@@ -22,9 +22,9 @@ class OregonSpider( scrapy.Spider ) :
         item = TestingStats()
         item_dict = { "name" : self.names[0] }
 
-        results = response.xpath( '/html/body/form/main/div/div[2]/div[2]/div[1]/div/div/div[2]/div/div/div/div/div/div/div/table[1]/tbody' )
+        results = response.xpath( '/html/body/form/main/div/div[2]/div/div/div[2]/div/div/div/div/div/div/div/table[1]/tbody' )
 
-        for i, row in enumerate( results.xpath( "tr" )[1:5] ):
+        for i, row in enumerate( results.xpath( "tr" )[1:4] ):
             value = row.xpath( "td[2]/text()" ).get()
             item_dict[self.case_categories[i]] = int( value )
 
