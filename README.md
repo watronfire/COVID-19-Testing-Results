@@ -1,4 +1,11 @@
 ## Crawl cases and save to file
+The purpose of this project is to crawl various government websites and collect COVID-19 testing data. This will hopefully aid in quantifying and comparing responses between countries.
+
+## Data
+Currently is available for the following countries/states. 
+
+## Spiders
+Currently spiders are available for the following countries/states. This is not neccessarily the same the above table because some data is collected manually.
 
 ## Dependencies
 
