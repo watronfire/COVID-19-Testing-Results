@@ -28,7 +28,7 @@ class WashingtonSpider( scrapy.Spider ):
         date = date.upper()
         date = dt.strptime( date, "%B %d, %Y at %I:%M %p" )
 
-        case_table = response.xpath( '/html/body/form/div[3]/div/div/div[3]/section/main/div[4]/div/div/div[7]/div[1]/div/div[1]/div/div[2]/div/div/div/div[6]/table[4]/tbody' )
+        case_table = response.xpath( '/html/body/form/div[3]/div/div/div[3]/section/main/div[4]/div/div/div[7]/div[1]/div/div/div/div[2]/div/div/div/div[6]/table[4]/tbody' )
         for i, row in enumerate( case_table.xpath( 'tr' ) ):
 
             value = row.xpath( 'td[2]/text()' ).get()
@@ -40,7 +40,8 @@ class WashingtonSpider( scrapy.Spider ):
         # from UW. Confirmed are only those which have been confirmed by CDC.
 
         item["date"] = date.strftime( "%Y-%m-%d %I:%M %p" )
-        item["Local"] = item_dict
+        for i in item_dict.keys():
+            item[i] = item_dict[i]
 
         print( item.toAsciiTable() )
         return item

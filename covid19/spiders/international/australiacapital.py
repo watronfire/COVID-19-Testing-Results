@@ -7,7 +7,7 @@ from datetime import datetime as dt
 
 class AustraliaSpider( scrapy.Spider ) :
 
-    name = "australiacaptital"
+    name = "australia"
     allowed_domains = ["https://health.act.gov.au"]
     obj = ["AustraliaCapital"]
     case_categories = ["positive", "pending", "negative"]
@@ -20,16 +20,36 @@ class AustraliaSpider( scrapy.Spider ) :
 
     def parse( self, response ):
         item = TestingStats()
-        positive = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div[1]/ul/li[1]/span/text()' ).get()
-        negative = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div[1]/ul/li[2]/span/b/text()' ).get()
+        positive = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[1]/div[2]/text()' ).get()
+        positive = positive.split( ": " )[-1]
+        print( positive )
+        negative = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[1]/div[3]/text()' ).get()
+        negative = negative.split( ": " )[-1]
+        print( negative)
 
-        date = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div[1]/p/strong/text()' ).get()
-        date = dt.strptime( date, "%d\xa0%B %Y, current as at %I.%M%p AEDT" )
+        date = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[1]/div[4]/text()' ).get()
+        date = dt.strptime( date, "as of %I:%M%p Australian Eastern Daylight Time, %d/%m/%Y" )
 
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
-        item["Local"] = { "name" : self.names[0],
-                          "positive" : positive,
-                          "negative" : negative }
+        item["name"] = self.names[0]
+        item["positive"] = positive
+        item["negative"] = negative
         print( item.toAsciiTable() )
         return item
+
+#['aupyth',
+# 'australiansw',
+# 'canadaalberta',
+# 'canadabritishcolumbia',
+# 'canadanational',
+# 'canadaontario',
+# 'unitedkingdomnational',
+# 'florida',
+# 'illinois',
+# 'newmexico',
+# 'newyork',
+# 'oregon',
+# 'sandiego',
+# 'snohomish',
+# 'washington']

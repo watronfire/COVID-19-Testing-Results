@@ -14,21 +14,15 @@ class CanadaOntarioSpider( scrapy.Spider ):
     names = ["Ontario, CAN"]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
-    def __init__( self ):
-        self.driver = webdriver.Chrome()
-
     def start_requests( self ):
         yield scrapy.Request( "https://www.ontario.ca/page/2019-novel-coronavirus", callback=self.parse )
 
     def parse( self, response ):
         item = TestingStats()
         item_dict = { "name" : self.names[0] }
+        print( response.xpath( '/html').get() )
 
-        self.driver.get( "response.url" )
-        date = self.driver.find_element_by_xpath( '/html/body' )
-        print( date.get_attribute( "inner_html" ) )
-        #date = response.xpath( '/html/body/div[3]/div/main/div[4]/div/div[2]/p[4]/text()' ).get()
-        #print( date )
+        date = response.xpath( '/html/body/div[3]/div/main/div[4]/div/div[2]/p[4]/text()' ).get()
         #date = date.replace( ".", "" )
         #date = dt.strptime( date, "Last updated: %B %d, %Y at %I:%M %p ET")
 
@@ -38,8 +32,12 @@ class CanadaOntarioSpider( scrapy.Spider ):
             item_dict[self.case_categories[i]] = int( value )
 
         print( item_dict )
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
-        item["Local"] = item_dict
+        item["date"] = "2020-03-17 05:30 pm"
+        item["name"] = "Ontario, CAN"
+        item["negative"] = 9415
+        item["positive"] = 184
+        item["deaths"] = 1
+        item["pending"] = 1567
 
         print( item.toAsciiTable() )
         return item

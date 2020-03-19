@@ -20,25 +20,26 @@ class NewMexicoSpider( scrapy.Spider ) :
 
     def parse( self, response ):
         item = TestingStats()
-        presumedPositive = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/text()" ).get()
-        positive = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[2]/td[2]/text()" ).get()
-        negative = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[3]/td[2]/text()" ).get()
-        total = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/table/tbody/tr[4]/td[2]/text()" ).get()
-        presumedPositive = int( presumedPositive )
-        positive = int( positive )
-        negative = int( negative )
-        total = int( total )
+        positive = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[2]/div/div[2]/div[2]/div/table/tbody/tr[1]/td[2]/text()" ).get()
+        negative = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[2]/div/div[2]/div[2]/div/table/tbody/tr[2]/td[2]/text()" ).get()
+        total = response.xpath( "/html/body/div/div[2]/div/article/div/div/div/div/div[2]/div/div[2]/div[2]/div/table/tbody/tr[3]/td[2]/text()" ).get()
+        positive = positive.replace( ",", "" )
+        negative = negative.replace(",", "")
+        total = total.replace(",", "")
+        positive = positive
+        negative = negative
+        total = total
 
-        date = response.xpath( '/html/body/div/div[2]/div/article/div/div/div/div/div[1]/div/div[2]/div[2]/div/p[2]/em/text()' ).get()
+        date = response.xpath( '/html/body/div/div[2]/div/article/div/div/div/div/div[2]/div/div[2]/div[2]/div/p[2]/em//text()' ).get()
         date = date.split( " " )[5:8]
         date = " ".join( date )
-        date = dt.strptime( date, "%B %d, %Y" )
+        date = dt.strptime( date, "%B %d, %Y." )
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
-        item["Local"] = { "name" : self.names[0],
-                          "presumedPositive" : presumedPositive,
-                          "positive" : positive,
-                          "negative" : negative,
-                          "pending" : total - ( positive + negative + presumedPositive )}
+        item["name"] = self.names[0]
+        item["positive"] = positive
+        item["negative"] = negative
+        item["pending"] = int( total ) - ( int( positive ) + int( negative ) )
+
         print( item.toAsciiTable() )
         return item

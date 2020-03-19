@@ -6,50 +6,33 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from functools import reduce
 from datetime import datetime as dt
 
-class CasesCategory(scrapy.Item):
-    positive = scrapy.Field(serialier = int)
-    presumedPositive = scrapy.Field(serializer = int)
-    negative = scrapy.Field(serialzer = int)
-    pending = scrapy.Field(serializer = int)
-    pui = scrapy.Field(seqializer = int)
-    name = scrapy.Field()
-
-class TestingStats(scrapy.Item):
+class TestingStats( scrapy.Item ):
     date = scrapy.Field()
-    Local = scrapy.Field(serializer = CasesCategory)
-    FederalQuarantine = scrapy.Field(serializer = CasesCategory)
-    NonLocal = scrapy.Field(serializer = CasesCategory)
-    Combined = scrapy.Field(serializer = CasesCategory)
+    positive = scrapy.Field( serializer = int )
+    pending = scrapy.Field( serializer = int )
+    negative = scrapy.Field( serializer = int )
+    deaths = scrapy.Field( serializer = int )
+    name = scrapy.Field( serializer = str )
+
 
     def getTotal(self, key = "positive"):
-        categories = sorted([i for i in self.keys() if i!= "date"])
-        return sum([int(self[i][key]) for i in categories])
-
-    def getCategoryTotal(self, key):
-        case_categories = [i for i in self[key].keys() if i != "name"]
-        return sum([int(self[key][i]) for i in case_categories])
+        categories = sorted( [i for i in self.keys() if i not in  ["date", "name"]] )
+        return sum( [int( self[i] ) for i in categories] )
 
     def toAsciiTable(self):
         # Get case categories for which data exists
-        categories = sorted([i for i in self.keys() if i!= "date"])
-        # Get all non null keys from lib import funs CasesCategory
-        case_categories = [list(self[i].keys()) for i in categories]
-        case_categories = reduce(lambda x,y: x+y,case_categories)
-        case_categories = sorted(list(set([i for i in case_categories if i != "name"])))
-        row_format = "|{:^30}" * (len(categories) + 1) + "|\n"
-        rows = []
-        rows.append([""])
-        rows[0].extend([self[i]["name"] for i in categories])
-        rows.extend([[i.capitalize()] + [self[j][i] if j in self.keys() and i in self[j].keys() else "NA" for j in categories] for i in case_categories])
-        rows.append(["Total"] + [self.getCategoryTotal(j) for j in categories])
-        row_str = "Last updated: {}".format(dt.strftime(dt.strptime(self["date"], "%Y-%m-%d %H:%M %p"), "%Y-%m-%d"))
+        case_categories = sorted([i for i in self.keys() if i not in ["date", "name"]])
+        row_format = "|{:^30}|{:^30}|\n"
+        rows = list()
+        rows.append( [""] )
+        rows[0].extend( [self["name"]] )
+        rows.extend( [[i.capitalize()] + [self[i]] for i in case_categories] )
+        rows.append( ["Total"] + [self.getTotal()] )
+        row_str = "Last updated: {}".format( dt.strftime( dt.strptime( self["date"], "%Y-%m-%d %H:%M %p"), "%Y-%m-%d" ) )
         row_str += "\n```\n"
         for i in rows:
-            print(i)
-            row_str += row_format.format(*i)
+            row_str += row_format.format( *i )
         row_str += "```\n"
-        row_str += "Total cases: {}".format(self.getTotal())
         return row_str

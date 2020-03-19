@@ -1,3 +1,5 @@
+# Depreciated. No longer reports negative test results.
+
 import scrapy
 from scrapy.crawler import CrawlerProcess
 

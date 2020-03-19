@@ -12,7 +12,7 @@ class CanadaNationalSpider( scrapy.Spider ):
     name = "canadaalberta"
     allowed_domains = ["https://www.alberta.ca/"]
     obj = ["CanadaAlberta"]
-    case_categories = ["negative", "positive"]
+    case_categories = ["negative", "positive", "deaths" ]
     names = ["Alberta, CAN"]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
@@ -24,9 +24,10 @@ class CanadaNationalSpider( scrapy.Spider ):
 
         item_dict = { "name" : self.names[0] }
 
-        data_table = response.xpath( '/html/body/main/div[1]/div[1]/div[3]/table/tbody/tr' )
+        data_table = response.xpath( '/html/body/main/div[1]/div[1]/div[4]/table/tbody/tr' )
 
         date = data_table.xpath( "th/text()" ).get()
+        print( date )
         date += " 2020"
         date = dt.strptime( date, 'Completed tests (as of %B %d) %Y')
 
@@ -36,7 +37,11 @@ class CanadaNationalSpider( scrapy.Spider ):
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
 
-        item["Local"] = item_dict
+        deaths = response.xpath( "/html/body/main/div[1]/div[1]/div[3]/table/tbody/tr[2]/td[2]/text()" ).get()
+        item_dict["deaths"] = deaths
+
+        for i in item_dict.keys():
+            item[i] = item_dict[i]
 
         print( item.toAsciiTable() )
         return item

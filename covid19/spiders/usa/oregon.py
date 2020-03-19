@@ -10,7 +10,7 @@ class OregonSpider( scrapy.Spider ) :
     name = "oregon"
     allowed_domains = ["https://www.oregon.gov/"]
     obj = ["Oregon"]
-    case_categories = ["positive", "negative", "pending", "pui" ]
+    case_categories = ["positive", "negative", "pending" ]
     names = ["Oregon" ]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
@@ -28,11 +28,16 @@ class OregonSpider( scrapy.Spider ) :
             value = row.xpath( "td[2]/text()" ).get()
             item_dict[self.case_categories[i]] = int( value )
 
+        deaths = response.xpath( '/html/body/form/main/div/div[2]/div/div/div[2]/div/div/div[1]/div/div/div/div/table[2]/tbody/tr[15]/td[3]/strong/text()' ).get()
+        item_dict["deaths"] = deaths
+
         date = results.xpath( "tr[1]/td/em/text()").get()
         date = date[:-1]
-        date = dt.strptime( date, "As of %m/%d/%Y, %I:%M %p" )
+        date = dt.strptime( date, "As of %m/%d/\u200b%Y, %I:%M %p" )
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
-        item["Local"] = item_dict
+
+        for i in item_dict.keys():
+            item[i] = item_dict[i]
 
         print( item.toAsciiTable() )
         return item

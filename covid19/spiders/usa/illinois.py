@@ -10,7 +10,7 @@ class IllinoisSpider( scrapy.Spider ) :
     name = "illinois"
     allowed_domains = ["http://www.dph.illinois.gov/"]
     obj = ["Illinois"]
-    case_categories = ["positive", "negative", "pending", "pui" ]
+    case_categories = ["positive", "negative" ]
     names = ["Illinois" ]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
@@ -20,22 +20,20 @@ class IllinoisSpider( scrapy.Spider ) :
 
     def parse( self, response ):
         item = TestingStats()
-        item_dict = { "name" : self.names[0] }
 
-        results = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/table/tbody' )
+        positive = response.xpath( "/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/div[1]/div[1]/h3/text()" ).get()
+        deaths = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/div[1]/div[3]/h3/text()' ).get()
+        total = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/div[1]/div[4]/h3/text()' ).get()
 
-        for i, row in enumerate( results.xpath( "tr" )[:-1] ):
-            value = row.xpath( "td/text()" ).get()
-            print( "{},{}".format( value, self.case_categories[i] ) )
-            item_dict[self.case_categories[i]] = int( value )
-
-        date = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/p[6]/text()[1]' ).get()
-        date = date.split( " " )[-3:]
-        date = " ".join( date )
-        date = dt.strptime( date, "%B %d, %Y." )
+        date = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/p[8]/em/text()' ).get()
+        date = date.split( ": " )[-1]
+        date = dt.strptime( date, "%B %d, %Y" )
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
-        item["Local"] = item_dict
+        item["positive"] = positive
+        item["deaths"] = deaths
+        item["negative"] = int( total ) - int( positive )
+        item["name"] = self.names[0]
 
         print( item.toAsciiTable() )
         return item

@@ -17,17 +17,18 @@ class AustraliaNSWSpider( scrapy.Spider ) :
     #  https://www.health.nsw.gov.au/news/Pages/default.aspx is listing of pres releases
 
     def start_requests( self ):
-        url_gen = "https://www.health.nsw.gov.au/news/Pages/{}_00.aspx".format( dt.now().strftime( "%Y%m%d" ) )
+        url_gen = "https://www.health.nsw.gov.au/news/Pages/{}_01.aspx".format( dt.now().strftime( "%Y%m%d" ) )
+        #rl_gen = "https://www.health.nsw.gov.au/news/Pages/20200316_02.aspx"
         yield scrapy.Request( url_gen, callback=self.parse )
 
     def parse( self, response ):
         item = TestingStats()
 
-        confirmed = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table/tbody/tr[2]/td[2]//text()[1]' ).get()
+        confirmed = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[2]/td/text()' ).get()
         confirmed = confirmed.replace( "*", "" )
-        pending = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table/tbody/tr[3]/td[2]/text()' ).get()
+        pending = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[3]/td/text()' ).get()
         pending = pending.replace( ",", "" )
-        negative = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table/tbody/tr[4]/td[2]/text()' ).get()
+        negative = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[4]/td/text()' ).get()
         negative = negative.replace( ",", "" )
 
 
@@ -37,9 +38,9 @@ class AustraliaNSWSpider( scrapy.Spider ) :
         date = dt.strptime( date, "%d %B %Y" )
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
-        item["Local"] = { "name" : self.names[0],
-                          "positive" : confirmed,
-                          "negative" : negative,
-                          "pending" : pending }
+        item["name"] = self.names[0]
+        item["positive"] = confirmed
+        item["negative"] = negative
+        item["pending"] = pending
         print( item.toAsciiTable() )
         return item
