@@ -14,6 +14,7 @@ BOT_NAME = 'covid19'
 SPIDER_MODULES = ['covid19.spiders', 'covid19.spiders.international', 'covid19.spiders.usa']
 NEWSPIDER_MODULE = 'covid19.spiders'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36'
+ITEM_PIPELINES = { "covid19.pipelines.Covid19Pipeline" : 300 }
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'covid19 (+http://www.yourdomain.com)'
@@ -33,7 +34,7 @@ ROBOTSTXT_OBEY = True
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False

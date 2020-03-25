@@ -4,6 +4,7 @@ from covid19.items import TestingStats
 import requests
 import json
 from datetime import datetime as dt
+from dateutil.parser import parse
 
 class CanadaBritishColumbiaSpider( scrapy.Spider ) :
 
@@ -50,17 +51,18 @@ class CanadaBritishColumbiaSpider( scrapy.Spider ) :
 
     def parse( self, response ):
         item = TestingStats()
-        confirmed_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[1]/span/text()' ).get()
+
+        confirmed_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[1]/strong/text()' ).get()
         confirmed = confirmed_paragraph.split( "\xa0" )[0]
 
-        totals_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[2]/p/text()' ).get()
+        totals_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[2]/text()' ).get()
         totals = totals_paragraph.split( "\xa0" )[0]
 
         deaths_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/ul/li[2]/text()' ).get()
-        deaths = self.Small[deaths_paragraph.split( "\xa0" )[0].lower()]
+        deaths = deaths_paragraph.split( "\xa0" )[0]
 
-        date = totals_paragraph.split( " of")[-1]
-        date = dt.strptime( date, "\xa0%B %d,\xa0%Y.\xa0" )
+        date = parse( confirmed_paragraph.split( "of " )[-1], fuzzy=True )
+        #date = dt.strptime( date, "\xa0%B %d,\xa0%Y.\xa0" )
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
         item["name"] = self.names[0]

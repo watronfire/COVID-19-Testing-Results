@@ -5,7 +5,7 @@ from datetime import datetime as dt
 from dateutil.parser import parse
 import logging
 
-class AlaskaSpider(scrapy.Spider):
+class VietnamSpider(scrapy.Spider):
     name = 'vietnam'
     allowed_domains = ['https://ncov.moh.gov.vn/']
     names = ["Vietnam"]

@@ -588,3 +588,21 @@ date,state,positive,negative,pending,death,total,dateChecked
 20200304,TX,1.0,,,,1.0,2020-03-04T21:00:00Z
 20200304,WA,39.0,,,,39.0,2020-03-04T21:00:00Z
 20200304,WI,1.0,19.0,6.0,,26.0,2020-03-04T21:00:00Z
+date,deaths,name,negative,pending,positive
+2020-03-18 00:00 AM,0,Alaska,400,,6
+date,deaths,name,negative,pending,positive
+2020-03-19 10:23 AM,0,Arkansaa,310,,46
+date,deaths,name,negative,pending,positive
+2020-03-18 00:00 AM,0,District of Columbia,153,11,39
+date,deaths,name,negative,pending,positive
+2020-03-18 08:30 AM,0,Idaho,457,,11
+date,deaths,name,negative,pending,positive
+2020-03-18 00:00 AM,1,Illinois,1764,,288
+2020-03-19 11:59 PM,2,Indiana,324,,56
+date,deaths,name,negative,pending,positive
+2020-03-18 17:00 PM,0,Kentucky,454,,35
+date,deaths,name,negative,pending,positive
+2020-03-18 00:00 AM,,New Mexico,2326,0,28
+date,deaths,name,negative,pending,positive
+2020-03-19 08:00 AM,3,Oregon,1329,437,88
+2020-03-18 03:25 PM,66,Washington,15918,,1187

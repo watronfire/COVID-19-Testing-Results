@@ -3,6 +3,7 @@ import scrapy
 from covid19.items import TestingStats
 from datetime import datetime as dt
 import logging
+from dateutil.parser import parse
 
 class DistrictColumbiaSpider( scrapy.Spider ):
     name = 'dc'
@@ -18,15 +19,16 @@ class DistrictColumbiaSpider( scrapy.Spider ):
         item = TestingStats()
 
         date = response.xpath( '//*[@id="node-page-1464296"]/div[1]/div/div/div/p[1]/strong/text()[1]' ).get()
-        date = dt.strptime( date, "%B, %d, %Y")
+        date = parse( date, fuzzy=True )
 
         values = list()
         for i in response.xpath( '//*[@id="node-page-1464296"]/div[1]/div/div/div/ul[1]/li' ):
             _ = i.xpath( 'text()' ).get()
-            _ = _.split( ": " )[-1]
+            _ = _.split( ":" )[-1]
             values.append( int( _ ) )
 
         deaths = 0
+        #print( values )
 
         item["date"] = date.strftime("%Y-%m-%d %H:%M %p")
         item["name"] =  self.names[0]

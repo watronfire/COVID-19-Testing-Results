@@ -4,6 +4,7 @@ from covid19.items import TestingStats
 import requests
 import json
 from datetime import datetime as dt
+from dateutil.parser import parse
 
 class NewMexicoSpider( scrapy.Spider ) :
 
@@ -30,10 +31,8 @@ class NewMexicoSpider( scrapy.Spider ) :
         negative = negative
         total = total
 
-        date = response.xpath( '/html/body/div/div[2]/div/article/div/div/div/div/div[2]/div/div[2]/div[2]/div/p[2]/em//text()' ).get()
-        date = date.split( " " )[5:8]
-        date = " ".join( date )
-        date = dt.strptime( date, "%B %d, %Y." )
+        date = response.xpath( '/html/body/div/div[2]/div/article/div/div/div/div/div[2]/div/div[2]/div[2]/div/p[3]/em/text()' ).get()
+        date = parse( date, fuzzy=True )
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
         item["name"] = self.names[0]

@@ -9,7 +9,7 @@ class UKSpider( scrapy.Spider ):
     name = "unitedkingdomnational"
     allowed_domains = ["https://www.gov.uk/"]
     obj = ["UnitedKingdom"]
-    case_categories = ["total", "negative", "positive"]
+    case_categories = ["total", "negative", "positive", "deaths"]
     names = ["United Kingdom"]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
@@ -20,7 +20,7 @@ class UKSpider( scrapy.Spider ):
         item = TestingStats()
         item_dict = { "name" : self.names[0] }
 
-        case_paragraph = response.xpath( '/html/body/div[6]/main/div[3]/div[1]/div/div[2]/div/p[7]/text()' ).get()
+        case_paragraph = response.xpath( '//*[@id="contents"]/div[2]/div/p[2]/text()' ).get()
         date = case_paragraph.split( "," )[0]
         date = dt.strptime( date, "As of %I%p on %d %B %Y")
 
@@ -28,7 +28,7 @@ class UKSpider( scrapy.Spider ):
         case_paragraph = case_paragraph.replace( ",", "" )
 
         values = [i for i in case_paragraph.split( " " ) if i.isnumeric()]
-        #values = values[]
+        print( values )
         for i, value in enumerate( values ):
             item_dict[self.case_categories[i]] = value
 

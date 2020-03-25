@@ -33,8 +33,9 @@ class ArkansasSpider(scrapy.Spider):
 
         item["date"] = date.strftime("%Y-%m-%d %H:%M %p")
         item["name"] =  self.names[0]
-        item["positive"] = table_values[2] + table_values[3]
-        item["negative"] = table_values[4]
+        total = table_values[2] + table_values[3]
+        item["negative"] = total - table_values[4]
+        item["positive"] = table_values[4]
         item["deaths"] = deaths
 
         print( item.toAsciiTable() )

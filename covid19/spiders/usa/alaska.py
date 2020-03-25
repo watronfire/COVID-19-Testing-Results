@@ -3,6 +3,7 @@ import scrapy
 from covid19.items import TestingStats
 from datetime import datetime as dt
 import logging
+from dateutil.parser import parse
 
 class AlaskaSpider(scrapy.Spider):
     name = 'alaska'
@@ -17,8 +18,8 @@ class AlaskaSpider(scrapy.Spider):
     def parse(self, response):
         item = TestingStats()
 
-        date = response.xpath( '/html/body/form/div[3]/div[2]/div/div/div[1]/div[1]/div[2]/div[2]/div[1]/div/p/em/text()' ).get()
-        date = dt.strptime( date, "Last updated %B %d, %Y @%I%p; ")
+        date = response.xpath( '/html/body/form/div[3]/div[2]/div/div/div[1]/div[1]/div[2]/div[2]/div/p/em/text()' ).get()
+        date = parse( date, fuzzy=True )
 
         positive = response.xpath( '/html/body/form/div[3]/div[2]/div/div/div[1]/div[1]/div[2]/div[2]/div[1]/ul[1]/li[2]/text()' ).get()
         positive = positive.split( ": " )[-1]

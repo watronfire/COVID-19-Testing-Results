@@ -22,17 +22,18 @@ class CzechRebublicSpider(scrapy.Spider):
         date = parse( date, fuzzy=True )
 
         positive = response.xpath( '/html/body/main/div/div[2]/div[1]/div[2]/div/p[2]/text()' ).get()
+        positive = positive.replace( " ", "" )
 
         total = response.xpath( '/html/body/main/div/div[2]/div[1]/div[1]/div/p[2]/text()' ).get()
         total = total.replace( ' ', '' )
 
-        deaths = 0
+        deaths = response.xpath( '/html/body/main/div/div[2]/div[1]/div[4]/div/p[2]/text()' ).get()
 
         item["date"] = date.strftime("%Y-%m-%d %H:%M %p")
         item["name"] =  self.names[0]
         item["positive"] = positive
         item["negative"] = int( total ) - int( positive )
-        item["deaths"] = int( deaths )
+        item["deaths"] = deaths
 
         print( item.toAsciiTable() )
         return item

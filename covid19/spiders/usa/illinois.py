@@ -4,6 +4,7 @@ from covid19.items import TestingStats
 import requests
 import json
 from datetime import datetime as dt
+from dateutil.parser import parse
 
 class IllinoisSpider( scrapy.Spider ) :
 
@@ -25,9 +26,8 @@ class IllinoisSpider( scrapy.Spider ) :
         deaths = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/div[1]/div[3]/h3/text()' ).get()
         total = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/div[1]/div[4]/h3/text()' ).get()
 
-        date = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/p[8]/em/text()' ).get()
-        date = date.split( ": " )[-1]
-        date = dt.strptime( date, "%B %d, %Y" )
+        date = response.xpath( '/html/body/div[1]/div[3]/div/article/div/div/div/dl/dd[1]/p[1]/text()[1]' ).get()
+        date = parse( date, fuzzy=True )
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
         item["positive"] = positive

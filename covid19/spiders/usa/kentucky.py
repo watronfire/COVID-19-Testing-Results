@@ -4,6 +4,7 @@ from covid19.items import TestingStats
 import requests
 import json
 from datetime import datetime as dt
+from dateutil.parser import parse
 
 class KentuckySpider( scrapy.Spider ) :
 
@@ -20,15 +21,14 @@ class KentuckySpider( scrapy.Spider ) :
 
     def parse( self, response ):
         item = TestingStats()
-        total = response.xpath( "/html/body/div[1]/div[4]/div[2]/p[1]/text()[2]" ).get()
-        positive = response.xpath( "/html/body/div[1]/div[4]/div[2]/p[1]/text()[3]" ).get()
+        total = response.xpath( "/html/body/div[1]/div[2]/div[2]/p/text()[2]" ).get()
+        positive = response.xpath( "/html/body/div[1]/div[2]/div[2]/p/text()[3]" ).get()
 
         positive = positive.split( ": " )[-1]
         total = total.split( ": " )[-1]
 
-        date = response.xpath( '/html/body/div[1]/div[4]/div[2]/p[1]/b[1]/text()' ).get()
-        date = date.split( "of " )[1]
-        date = dt.strptime( date, "%B %d, %Y at %I p.m. Eastern time" )
+        date = response.xpath( '/html/body/div[1]/div[2]/div[2]/p/b[1]/text()' ).get()
+        date = parse( date, fuzzy=True )
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
         item["name"] = self.names[0]

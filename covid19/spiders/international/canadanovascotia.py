@@ -18,12 +18,13 @@ class CanadaNovaScotiaSpider( scrapy.Spider ) :
 
     def parse( self, response ):
         item = TestingStats()
-        confirmed = response.xpath( '/html/body/main/div/div[4]/div[1]/section[2]/table/tr[1]/td/text()' ).get()
-        presumed_confirmed = response.xpath( '/html/body/main/div/div[4]/div[1]/section[2]/table/tr[2]/td/text()' ).get()
+        confirmed = response.xpath( '/html/body/main/div/div[4]/div[1]/section[2]/table/tr/td/text()' ).get()
+        #presumed_confirmed = response.xpath( '/html/body/main/div/div[4]/div[1]/section[2]/table/tr[2]/td/text()' ).get()
 
-        negative = response.xpath( '/html/body/main/div/div[4]/div[1]/section[2]/table/tr[3]/td/text()' ).get()
+        negative = response.xpath( '/html/body/main/div/div[4]/div[1]/section[2]/table/tr[2]/td/text()' ).get()
+        negative = negative.replace( ",", "" )
 
-        date = response.xpath( '/html/body/main/div/div[4]/div[1]/section[2]/p[1]/text()' ).get()
+        date = response.xpath( '//*[@id="cases"]/p[1]/time/text()' ).get()
 
         date = parse( date, fuzzy=True )
 
@@ -31,8 +32,9 @@ class CanadaNovaScotiaSpider( scrapy.Spider ) :
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
         item["name"] = self.names[0]
-        item["positive"] = int( confirmed ) + int( presumed_confirmed )
+        item["positive"] = int( confirmed )
         item["negative"] = negative
         item["deaths"] = deaths
         print( item.toAsciiTable() )
+        print( "REMEMBER TO UPDATES DEATHS")
         return item

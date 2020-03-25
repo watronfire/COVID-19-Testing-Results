@@ -20,7 +20,7 @@ class CanadaOntarioSpider( scrapy.Spider ):
     def parse( self, response ):
         item = TestingStats()
         item_dict = { "name" : self.names[0] }
-        print( response.xpath( '/html').get() )
+        #print( response.xpath( '/html').get() )
 
         date = response.xpath( '/html/body/div[3]/div/main/div[4]/div/div[2]/p[4]/text()' ).get()
         #date = date.replace( ".", "" )
@@ -32,12 +32,12 @@ class CanadaOntarioSpider( scrapy.Spider ):
             item_dict[self.case_categories[i]] = int( value )
 
         print( item_dict )
-        item["date"] = "2020-03-17 05:30 pm"
+        item["date"] = "2020-03-23 05:30 pm"
         item["name"] = "Ontario, CAN"
-        item["negative"] = 9415
-        item["positive"] = 184
-        item["deaths"] = 1
-        item["pending"] = 1567
+        item["negative"] = 21795
+        item["positive"] = 572
+        item["deaths"] = 8
+        item["pending"] = 10074
 
         print( item.toAsciiTable() )
         return item

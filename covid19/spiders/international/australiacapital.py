@@ -4,6 +4,7 @@ from covid19.items import TestingStats
 import requests
 import json
 from datetime import datetime as dt
+from dateutil.parser import parse
 
 class AustraliaSpider( scrapy.Spider ) :
 
@@ -20,15 +21,14 @@ class AustraliaSpider( scrapy.Spider ) :
 
     def parse( self, response ):
         item = TestingStats()
-        positive = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[1]/div[2]/text()' ).get()
+        positive = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[2]/div[1]/text()' ).get()
         positive = positive.split( ": " )[-1]
-        print( positive )
-        negative = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[1]/div[3]/text()' ).get()
-        negative = negative.split( ": " )[-1]
-        print( negative)
 
-        date = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[1]/div[4]/text()' ).get()
-        date = dt.strptime( date, "as of %I:%M%p Australian Eastern Daylight Time, %d/%m/%Y" )
+        negative = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[2]/div[2]/text()' ).get()
+        negative = negative.split( ": " )[-1]
+
+        date = response.xpath( '/html/body/div[1]/div/main/div[2]/div/div/div/div[1]/article/div/div[1]/div/div[1]/span/text()' ).get()
+        date = parse( date, fuzzy=True )
 
 
         item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )

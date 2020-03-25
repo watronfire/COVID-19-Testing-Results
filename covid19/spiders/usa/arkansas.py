@@ -3,6 +3,7 @@ import scrapy
 from covid19.items import TestingStats
 from datetime import datetime as dt
 import logging
+from dateutil.parser import parse
 
 class ArkansasSpider(scrapy.Spider):
     name = 'arkansas'
@@ -18,11 +19,11 @@ class ArkansasSpider(scrapy.Spider):
         item = TestingStats()
 
         date = response.xpath( '/html/body/div[7]/div[1]/table[4]/thead/tr/th/text()' ).get()
-        date = dt.strptime( date, "Status Update as of %B %d, %Y")
+        date = parse( date, fuzzy=True )
 
         # Often these changes from b to strong or vice-versa.
         positive = response.xpath( '/html/body/div[7]/div[1]/table[4]/tbody/tr[1]/td[2]/b/text()' ).get()
-        negative = response.xpath( '/html/body/div[7]/div[1]/table[6]/tbody/tr[1]/td[2]/strong/text()' ).get()
+        negative = response.xpath( '/html/body/div[7]/div[1]/table[6]/tbody/tr[1]/td[2]/b/text()' ).get()
 
         deaths = 0
 

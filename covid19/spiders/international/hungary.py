@@ -5,30 +5,28 @@ from datetime import datetime as dt
 from dateutil.parser import parse
 import logging
 
-class AustriaSpider(scrapy.Spider):
-    name = 'austria'
-    allowed_domains = ['https://www.sozialministerium.at/']
-    names = ["Austria"]
+class HungarySpider(scrapy.Spider):
+    name = 'hungary'
+    allowed_domains = ['https://koronavirus.gov.hu/']
+    names = ["Hungary"]
     case_categories = ["positive", "negative"]
     custom_settings = {"LOG_LEVEL" : logging.ERROR }
 
     def start_requests( self ):
-        yield scrapy.Request( "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Neuartiges-Coronavirus-(2019-nCov).html", callback=self.parse )
+        yield scrapy.Request( 'https://koronavirus.gov.hu/', callback=self.parse )
 
     def parse(self, response):
         item = TestingStats()
 
-        date = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p/strong[1]/text()' ).get()
-        date = dt.strptime( date, 'Stand, %d.%m.%Y, %H:%M Uhr' )
+        date = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[1]/section/div/p/text()' ).get()
+        date = parse( date, fuzzy=True )
 
-        positive = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p/strong[4]/text()' ).get()
-        positive = positive.replace( ".", "" )
+        positive = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[2]/div[1]/div/span/div/span[1]/text()' ).get()
 
-        total = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p/strong[2]/text()' ).get()
-        total = total.replace( ".", "" )
+        total = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[2]/div[5]/div/span/div/span[1]/text()' ).get()
+        total = total.replace( " ", "" )
 
-        deaths = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p/strong[5]/text()[2]' ).get()
-        deaths = deaths.split( ": " )[-1]
+        deaths = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[2]/div[3]/div/span/div/span[1]/text()' ).get()
 
         item["date"] = date.strftime("%Y-%m-%d %H:%M %p")
         item["name"] =  self.names[0]
