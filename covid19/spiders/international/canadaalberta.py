@@ -23,25 +23,28 @@ class CanadaAlbertaSpider( scrapy.Spider ):
     def parse( self, response ) :
         item = TestingStats()
 
-        table = response.xpath( '/html/body/main/div/div/div[2]/table/tbody/tr' )
+        #table = response.xpath( '/html/body/main/div/div/div[2]/table/tbody/tr' )
 
-        date = table.xpath( "th/text()" ).get()
-        date = parse( date, fuzzy=True )
+        #print( response.xpath( 'html' ).get() )
 
-        negative = table.xpath( "td[1]/text()" ).get()
-        negative = negative.replace( ",", "" )
+        #date = table.xpath( "th/text()" ).get()
+        #date = parse( date, fuzzy=True )
 
-        positive = table.xpath( 'td[2]/text()' ).get()
-        positive = positive.replace( ",", "" )
+        #negative = table.xpath( "td[1]/text()" ).get()
+        #negative = negative.replace( ",", "" )
 
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+        #positive = table.xpath( 'td[2]/text()' ).get()
+        #positive = positive.replace( ",", "" )
 
-        deaths = response.xpath( '/html/body/main/div/div/div[1]/table/tbody/tr[2]/td[2]/text()' ).get()
+        #item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+
+        #deaths = response.xpath( '/html/body/main/div/div/div[1]/table/tbody/tr[2]/td[2]/text()' ).get()
 
         item["name"] = self.names[0]
-        item["positive"] = positive
-        item["negative"] = negative
-        item["deaths"] = deaths
+        item['date'] = dt.now().strftime( "%Y-%m-%d %H:%M %p" )
+        item["positive"] = 419
+        item["negative"] = 35089
+        item["deaths"] = 2
 
         print( item.toAsciiTable() )
         return item

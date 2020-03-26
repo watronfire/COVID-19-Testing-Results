@@ -25,6 +25,7 @@ class AustraliaNSWSpider( scrapy.Spider ) :
         item = TestingStats()
 
         confirmed = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[2]/td[2]/text()' ).get()
+        confirmed = confirmed.replace( ",", "" )
         #confirmed = confirmed.replace( "*", "" )
         #pending = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[3]/td/text()' ).get()
         #pending = pending.replace( ",", "" )

@@ -14,23 +14,30 @@ from covid19.spiders.international.canadaontario import CanadaOntarioSpider
 from covid19.spiders.international.canadaquebec import CanadaQuebecSpider
 from covid19.spiders.international.czechrebublic import CzechRebublicSpider
 from covid19.spiders.international.hungary import HungarySpider
+from covid19.spiders.international.lithuania import LithuaniaSpider
+from covid19.spiders.international.malaysia import MalaysiaSpider
 from covid19.spiders.international.unitedkingdom import UKSpider
 from covid19.spiders.international.vietnam import VietnamSpider
 
 process = CrawlerProcess( get_project_settings() )
-process.crawl( AustraliaSpider )
-process.crawl( AustraliaNSWSpider )
-process.crawl( AustriaSpider )
-process.crawl( BahrainSpider )
-process.crawl( CanadaAlbertaSpider )
-process.crawl( CanadaOntarioSpider )
-process.crawl( CanadaBritishColumbiaSpider )
-process.crawl( CanadaNationalSpider )
-process.crawl( CanadaNewBrunswickSpider )
-process.crawl( CanadaNovaScotiaSpider )
-process.crawl( CanadaQuebecSpider )
-process.crawl( CzechRebublicSpider )
-process.crawl( HungarySpider )
-process.crawl( UKSpider )
-process.crawl( VietnamSpider )
+spiders = [ AustraliaSpider,
+            AustraliaNSWSpider,
+            AustriaSpider,
+            BahrainSpider,
+            CanadaAlbertaSpider,
+            CanadaOntarioSpider,
+            CanadaBritishColumbiaSpider,
+            CanadaNationalSpider,
+            CanadaNewBrunswickSpider,
+            CanadaNovaScotiaSpider,
+            CanadaQuebecSpider,
+            CzechRebublicSpider,
+            HungarySpider,
+            UKSpider,
+            VietnamSpider,
+            LithuaniaSpider,
+            MalaysiaSpider ]
+
+for i in spiders:
+    process.crawl( i )
 process.start()

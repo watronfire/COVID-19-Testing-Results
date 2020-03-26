@@ -56,7 +56,7 @@ class CanadaBritishColumbiaSpider( scrapy.Spider ) :
         confirmed = confirmed_paragraph.split( "\xa0" )[0]
 
         totals_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[2]/text()' ).get()
-        totals = totals_paragraph.split( "\xa0" )[0]
+        totals = totals_paragraph.split( " " )[0]
 
         deaths_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/ul/li[2]/text()' ).get()
         deaths = deaths_paragraph.split( "\xa0" )[0]

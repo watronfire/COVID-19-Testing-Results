@@ -7,6 +7,7 @@ from covid19.items import TestingStats
 import requests
 import json
 from datetime import datetime as dt
+import re
 from dateutil.parser import parse
 
 class CanadaQuebecSpider( scrapy.Spider ):
@@ -30,10 +31,10 @@ class CanadaQuebecSpider( scrapy.Spider ):
         date = parse( date, fuzzy=True )
 
         positive = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[4]/ul/li[1]/text()' ).get()
-        positive = "".join( positive.split( "\xa0" )[:2] )
+        positive = "".join( re.split( ' |\xa0', positive )[:2] )
 
         negative = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[4]/ul/li[5]/text()' ).get()
-        negative = "".join( negative.split( "\xa0" )[:2] )
+        negative = "".join( re.split( ' |\xa0', negative )[:2] )
 
         deaths = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[4]/ul/li[2]/text()' ).get()
         deaths = deaths.split( "\xa0" )[0]
