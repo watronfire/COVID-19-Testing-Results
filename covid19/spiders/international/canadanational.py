@@ -39,7 +39,7 @@ class CanadaNationalSpider( scrapy.Spider ):
         deaths = response.xpath( '/html/body/main/div[4]/table/tbody/tr[15]/td[4]/strong/text()' ).get()
         item_dict["deaths"] = deaths
 
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+        item["date"] = date.strftime( "%Y-%m-%d" )
 
         # Commenting this out because its not clear if pending cases are listed or not.
         item_dict["pending"] = total - ( item_dict["positive"] + item_dict["negative"] )

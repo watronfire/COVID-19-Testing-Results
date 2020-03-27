@@ -39,7 +39,7 @@ class CanadaNewBrunswickSpider( scrapy.Spider ):
         #deaths = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[4]/ul/li[3]/text()' ).get()
         deaths = 0
 
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+        item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
         item["positive"] = positive
         item["negative"] = negative

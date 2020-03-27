@@ -31,7 +31,7 @@ class AustraliaSpider( scrapy.Spider ) :
         date = parse( date, fuzzy=True )
 
 
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+        item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
         item["positive"] = positive
         item["negative"] = negative

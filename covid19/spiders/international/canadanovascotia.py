@@ -30,7 +30,7 @@ class CanadaNovaScotiaSpider( scrapy.Spider ) :
 
         deaths = 0
 
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+        item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
         item["positive"] = int( confirmed )
         item["negative"] = negative

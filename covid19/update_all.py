@@ -13,6 +13,7 @@ from covid19.spiders.international.canadanovascotia import CanadaNovaScotiaSpide
 from covid19.spiders.international.canadaontario import CanadaOntarioSpider
 from covid19.spiders.international.canadaquebec import CanadaQuebecSpider
 from covid19.spiders.international.czechrebublic import CzechRebublicSpider
+from covid19.spiders.international.estonia import EstoniaSpider
 from covid19.spiders.international.hungary import HungarySpider
 from covid19.spiders.international.lithuania import LithuaniaSpider
 from covid19.spiders.international.malaysia import MalaysiaSpider
@@ -36,7 +37,8 @@ spiders = [ AustraliaSpider,
             UKSpider,
             VietnamSpider,
             LithuaniaSpider,
-            MalaysiaSpider ]
+            MalaysiaSpider,
+            EstoniaSpider ]
 
 for i in spiders:
     process.crawl( i )

@@ -28,13 +28,12 @@ class UKSpider( scrapy.Spider ):
         case_paragraph = case_paragraph.replace( ",", "" )
 
         values = [i for i in case_paragraph.split( " " ) if i.isnumeric()]
-        print( values )
         for i, value in enumerate( values ):
             item_dict[self.case_categories[i]] = value
 
         del item_dict["total"]
 
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+        item["date"] = date.strftime( "%Y-%m-%d" )
         for i in item_dict.keys():
             item[i] = item_dict[i]
 

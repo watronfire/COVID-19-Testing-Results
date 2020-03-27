@@ -30,7 +30,7 @@ class TestingStats( scrapy.Item ):
         rows[0].extend( [self["name"]] )
         rows.extend( [[i.capitalize()] + [self[i]] for i in case_categories] )
         rows.append( ["Total"] + [self.getTotal()] )
-        row_str = "Last updated: {}".format( dt.strftime( dt.strptime( self["date"], "%Y-%m-%d %H:%M %p"), "%Y-%m-%d" ) )
+        row_str = "Last updated: {}".format( self["date"] )
         row_str += "\n```\n"
         for i in rows:
             row_str += row_format.format( *i )

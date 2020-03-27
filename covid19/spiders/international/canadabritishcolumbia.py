@@ -64,7 +64,7 @@ class CanadaBritishColumbiaSpider( scrapy.Spider ) :
         date = parse( confirmed_paragraph.split( "of " )[-1], fuzzy=True )
         #date = dt.strptime( date, "\xa0%B %d,\xa0%Y.\xa0" )
 
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+        item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
         item["positive"] = confirmed
         item["negative"] = int( totals.replace( ",", "" ) ) - int( confirmed.replace( ",", "" ) )

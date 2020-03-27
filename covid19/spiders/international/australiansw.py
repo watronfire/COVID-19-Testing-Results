@@ -38,7 +38,7 @@ class AustraliaNSWSpider( scrapy.Spider ) :
         date = date.strip()
         date = dt.strptime( date, "%d %B %Y" )
 
-        item["date"] = date.strftime( "%Y-%m-%d %H:%M %p" )
+        item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
         item["positive"] = confirmed.strip()
         item["negative"] = negative.strip()

@@ -17,7 +17,7 @@ class MalaysiaSpider(scrapy.Spider):
 
     def parse(self, response):
         item = TestingStats()
-        item["date"] = dt.now().strftime("%Y-%m-%d %H:%M %p")
+        item["date"] = dt.now().strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
 
         date = dt.now()

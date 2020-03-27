@@ -28,7 +28,7 @@ class VietnamSpider(scrapy.Spider):
 
         deaths = response.xpath( '//*[@id="p_p_id_56_"]/div/div/div/div[1]/div/h4/strong/span/span/text()' ).get()
 
-        item["date"] = date.strftime("%Y-%m-%d %H:%M %p")
+        item["date"] = date.strftime("%Y-%m-%d")
         item["name"] =  self.names[0]
         item["positive"] = int( positive )
         item["negative"] = int( negative )

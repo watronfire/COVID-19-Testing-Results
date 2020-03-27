@@ -33,7 +33,7 @@ class AustriaSpider(scrapy.Spider):
         deaths = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p/strong[3]/text()' ).get()
         deaths = deaths.split( ": " )[-1]
 
-        item["date"] = date.strftime("%Y-%m-%d %H:%M %p")
+        item["date"] = date.strftime("%Y-%m-%d")
         item["name"] =  self.names[0]
         item["positive"] = int( positive )
         item["negative"] = int( total ) - int( positive )
