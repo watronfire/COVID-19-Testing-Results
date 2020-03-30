@@ -18,20 +18,21 @@ class AustriaSpider(scrapy.Spider):
     def parse(self, response):
         item = TestingStats()
 
-        date = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p/strong[1]/text()' ).get()
-        date = dt.strptime( date, 'Stand in Österreich, %d.%m.%Y, %H:%M Uhr' )
+        #date = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p/strong[1]/text()' ).get()
+        #date = dt.strptime( date, 'Stand in Österreich, %d.%m.%Y, %H:%M Uhr' )
+        date = dt.now()
 
-        positive = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/div/p[4]/text()' ).get()
+        positive = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p[3]/text()' ).get()
         positive = positive.split( " F" )[0]
         positive = positive.replace( ".", "" )
         positive = positive.replace( "\xa0", "" )
         positive = positive.replace( ":", "" )
 
-        total = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/div/p[3]/text()' ).get()
+        total = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p[2]/text()' ).get()
         total = total.replace( ".", "" )
 
-        deaths = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p/strong[3]/text()' ).get()
-        deaths = deaths.split( ": " )[-1]
+        deaths = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p[4]/text()[2]' ).get()
+        deaths = deaths.split( "," )[0]
 
         item["date"] = date.strftime("%Y-%m-%d")
         item["name"] =  self.names[0]

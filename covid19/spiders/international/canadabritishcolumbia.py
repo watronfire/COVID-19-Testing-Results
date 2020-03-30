@@ -5,6 +5,7 @@ import requests
 import json
 from datetime import datetime as dt
 from dateutil.parser import parse
+import re
 
 class CanadaBritishColumbiaSpider( scrapy.Spider ) :
 
@@ -53,13 +54,13 @@ class CanadaBritishColumbiaSpider( scrapy.Spider ) :
         item = TestingStats()
 
         confirmed_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[1]/strong/text()' ).get()
-        confirmed = confirmed_paragraph.split( "\xa0" )[0]
+        confirmed = re.split( ' |\xa0', confirmed_paragraph )[0]
 
         totals_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[2]/text()' ).get()
-        totals = totals_paragraph.split( " " )[0]
+        totals = re.split( ' |\xa0', totals_paragraph )[0]
 
         deaths_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/ul/li[2]/text()' ).get()
-        deaths = deaths_paragraph.split( "\xa0" )[0]
+        deaths = re.split( ' |\xa0', deaths_paragraph )[0]
 
         date = parse( confirmed_paragraph.split( "of " )[-1], fuzzy=True )
         #date = dt.strptime( date, "\xa0%B %d,\xa0%Y.\xa0" )

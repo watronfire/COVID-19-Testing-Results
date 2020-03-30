@@ -33,7 +33,7 @@ class CanadaQuebecSpider( scrapy.Spider ):
         positive = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[5]/ul[1]/li[1]/text()' ).get()
         positive = "".join( re.split( ' |\xa0', positive )[:2] )
 
-        negative = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[5]/ul/li[5]/text()' ).get()
+        negative = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[5]/ul[1]/li[4]/text()' ).get()
         negative = "".join( re.split( ' |\xa0', negative )[:2] )
 
         deaths = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[5]/ul/li[2]/text()' ).get()

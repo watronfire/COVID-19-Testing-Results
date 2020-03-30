@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 import scrapy
 from covid19.items import TestingStats
 from datetime import datetime as dt
@@ -26,6 +28,7 @@ class LithuaniaSpider(scrapy.Spider):
         total = total.split( ":" )[-1]
 
         deaths = response.xpath( '//*[@id="module_Structure"]/div[1]/div[2]/div[3]/div[3]/ul/li[2]/b/text()' ).get()
+        deaths = re.split( " |\xa0", deaths )[1]
 
         item["date"] = date.strftime("%Y-%m-%d")
         item["name"] =  self.names[0]
