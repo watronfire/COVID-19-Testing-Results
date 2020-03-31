@@ -31,12 +31,12 @@ class CanadaOntarioSpider( scrapy.Spider ):
             value = row.xpath( "td[2]/text()" ).get()
             item_dict[self.case_categories[i]] = int( value )
 
-        item["date"] = "2020-03-27"
+        item["date"] = "2020-03-30"
         item["name"] = "Ontario, CAN"
-        item["negative"] = 40630
-        item["positive"] = 1324
+        item["negative"] = 48461
+        item["positive"] = 1706
         item["deaths"] = 23
-        item["pending"] = 7203
+        item["pending"] = 5651
 
         print( item.toAsciiTable() )
         return item

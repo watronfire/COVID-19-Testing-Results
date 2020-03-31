@@ -17,8 +17,8 @@ class AustraliaNSWSpider( scrapy.Spider ) :
     #  https://www.health.nsw.gov.au/news/Pages/default.aspx is listing of pres releases
 
     def start_requests( self ):
-        #url_gen = "https://www.health.nsw.gov.au/news/Pages/{}_00.aspx".format( dt.now().strftime( "%Y%m%d" ) )
-        url_gen = "https://www.health.nsw.gov.au/news/Pages/20200329_01.aspx"
+        url_gen = "https://www.health.nsw.gov.au/news/Pages/{}_00.aspx".format( dt.now().strftime( "%Y%m%d" ) )
+        #url_gen = "https://www.health.nsw.gov.au/news/Pages/20200329_01.aspx"
         yield scrapy.Request( url_gen, callback=self.parse )
 
     def parse( self, response ):
