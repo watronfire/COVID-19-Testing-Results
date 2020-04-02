@@ -1,9 +1,6 @@
 ## Crawl cases and save to file
 The purpose of this project is to crawl various government websites and collect COVID-19 testing data. This will hopefully aid in quantifying and comparing responses between countries.
 
-## Data
-Currently is available for the following countries/states. 
-
 ## Spiders
 Currently spiders are available for the following countries/states. This is not neccessarily the same the above table because some data is collected manually.
 | Country                     | Region          | Source URL                                                                                                                                     | Notes                                                                                                                                | Additional URL                                                                                                                   | Scrap         |
@@ -48,20 +45,15 @@ Currently spiders are available for the following countries/states. This is not 
 | Philippines                 | Oceania         | [Philippines Department of Health](https://www.doh.gov.ph/2019-nCoV/)                                                                          | Can find negative and positve test results, but not deaths. Need additional source besides interactive maps.                         |                                                                                                                                  | Scrapy        |
 | --------------------------- | --------------- | ----------------------- | ---------------------------------------------------------------------------------- | -------------------------- | ------------- |
 
+## Data
+Refer to the diagram below to see what dates for what countries are available. Black indicates unavailable, and white indicates available. Updated data is typically added at 9 PM PST.
+![completeness](images/completeness.png)
+
 ## Dependencies
 
 * [Scrapy](https://scrapy.org/)
 
 ## Configuration
 
-1. Add config file (./covid19/config.py) to post ascii tables to URLs (Use case: Slack bot).
-
-```
-slack_sandiego_post_url = "<post-url>"
-```
-
-2. Create ./logs/ and ./data directories
-3. Run command from base directory
-```
-scrapy crawl --logfile logs/$(date +%Y-%m-%d-%H-%M.log) -o data/items.csv sandiego
-```
+1. Modify pipeline (covid19/pipeline.py) to specify were to save data.
+2. Run pipeline with covid19/update_all.py script. Countries specified for manual scrapping in the table below must be updated separately.
