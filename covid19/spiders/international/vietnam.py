@@ -21,12 +21,12 @@ class VietnamSpider(scrapy.Spider):
         date = response.xpath( '/html/body/div[1]/div/div/div/div/div[1]/div/div/section/div[2]/div[1]/div[1]/div[2]/p/small/strong/text()' ).get()
         date = parse( date )
 
-        positive = response.xpath( '//*[@id="p_p_id_56_"]/div/div/div/div[3]/div[6]/strong/span[2]/span/text()' ).get()
+        positive = response.xpath( '/html/body/div[1]/div/div/div/div/div[1]/div/div/section/div[2]/div[2]/div[2]/div/div/div/div/div[3]/div[6]/strong/font/span/text()' ).get()
 
-        negative = response.xpath( '//*[@id="p_p_id_56_"]/div/div/div/div[3]/div[7]/strong/span[2]/span/text()' ).get()
+        negative = response.xpath( '/html/body/div[1]/div/div/div/div/div[1]/div/div/section/div[2]/div[2]/div[2]/div/div/div/div/div[3]/div[7]/strong/span[2]/span/text()' ).get()
         negative = negative.replace( ".", "" )
 
-        deaths = response.xpath( '//*[@id="p_p_id_56_"]/div/div/div/div[1]/div/h4/strong/span/span/text()' ).get()
+        deaths = response.xpath( '/html/body/div[1]/div/div/div/div/div[1]/div/div/section/div[2]/div[2]/div[2]/div/div/div/div/div[1]/div/h4/strong/span/span/text()' ).get()
 
         item["date"] = date.strftime("%Y-%m-%d")
         item["name"] =  self.names[0]

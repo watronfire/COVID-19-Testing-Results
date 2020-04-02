@@ -20,10 +20,10 @@ class EstoniaSpider(scrapy.Spider):
         item["date"] = dt.now().strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
 
-        total =  response.xpath( "/html/body/div[2]/div/section/div[3]/div/div/div/section[1]/div/div/div/div/div[2]/h1/strong/text()" ).get()
-        positive = response.xpath( '/html/body/div[2]/div/section/div[3]/div/div/div/section[1]/div/div/div/div[2]/div[2]/h1/strong/text()' ).get()
+        total =  response.xpath( '//*[@id="block-block-12"]/div/div/div/div[1]/div[2]/h2/text()' ).get()
+        positive = response.xpath( '//*[@id="block-block-12"]/div/div/div/div[2]/div[2]/h2/text()' ).get()
 
-        item["deaths"] = 1
+        item["deaths"] = response.xpath( '//*[@id="block-block-12"]/div/div/div/div[3]/div[2]/h2/text()' ).get()
 
         item["positive"] = positive
         item["negative"] = int( total ) - int( positive )

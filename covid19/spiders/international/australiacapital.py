@@ -23,6 +23,7 @@ class AustraliaSpider( scrapy.Spider ) :
         item = TestingStats()
         positive = response.xpath( '/html/body/main/div[2]/div[2]/table[1]/tbody/tr/td[1]/text()' ).get()
         positive = positive.strip()
+        positive = positive.replace( "*", "" )
 
         negative = response.xpath( '/html/body/main/div[2]/div[2]/table[1]/tbody/tr/td[2]/text()' ).get()
         negative = negative.strip()

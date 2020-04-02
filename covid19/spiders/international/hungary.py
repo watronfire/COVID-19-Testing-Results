@@ -32,7 +32,8 @@ class HungarySpider(scrapy.Spider):
         item["name"] =  self.names[0]
         item["positive"] = int( positive )
         item["negative"] = int( total ) - int( positive )
-        item["deaths"] = int( deaths )
+        #item["deaths"] = int( deaths )
+        item["deaths"] = 16
 
         print( item.toAsciiTable() )
         return item

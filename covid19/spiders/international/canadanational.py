@@ -26,21 +26,19 @@ class CanadaNationalSpider( scrapy.Spider ):
         item = TestingStats()
         item_dict = { "name" : self.names[0] }
 
-        date = response.xpath( "/html/body/main/div[6]/table/caption/text()" ).get()
+        date = response.xpath( '/html/body/main/div[7]/table/caption/text()' ).get()
+        date = date.split( " of ")[-1]
         date = parse( date, fuzzy=True )
 
-        case_table = response.xpath( '/html/body/main/div[6]/table/tbody/tr' )
+        case_table = response.xpath( '/html/body/main/div[7]/table/tbody/tr' )
         for i, row in enumerate( case_table.xpath( 'td/text()' )[:3] ):
             if i == 0:
                 total = int( row.get().replace( ",", "" ) )
             else:
                 item_dict[self.case_categories[i]] = int( row.get().replace( ",", "" ) )
 
-        print( total )
-        print( item_dict )
-
         #deaths = response.xpath( '/html/body/div/table/tbody/tr[1]/td[4]/text()' ).get()
-        deaths = 53
+        deaths = 109
         item_dict["deaths"] = deaths
 
         item["date"] = date.strftime( "%Y-%m-%d" )
@@ -52,5 +50,4 @@ class CanadaNationalSpider( scrapy.Spider ):
             item[i] = item_dict[i]
 
         print( item.toAsciiTable() )
-        print( "REMEMBER TO UPDATE DEATHS" )
         return item

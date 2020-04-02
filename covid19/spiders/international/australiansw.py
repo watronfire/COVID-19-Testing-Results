@@ -11,7 +11,7 @@ class AustraliaNSWSpider( scrapy.Spider ) :
     allowed_domains = ["https://www.health.nsw.gov.au"]
     obj = ["AustraliaNSW"]
     case_categories = ["positive", "pending", "negative"]
-    names = ["NSW, AUS"]
+    names = ["Australia, NSW"]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
     #  https://www.health.nsw.gov.au/news/Pages/default.aspx is listing of pres releases

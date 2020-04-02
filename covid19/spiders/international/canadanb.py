@@ -14,7 +14,7 @@ class CanadaNewBrunswickSpider( scrapy.Spider ):
     allowed_domains = ["https://www2.gnb.ca/"]
     obj = ["CanadaNewBrunswick"]
     case_categories = ["negative", "positive", "deaths" ]
-    names = ["New Brunswick, Canada"]
+    names = ["Canada, New Brunswick"]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
     def start_requests( self ):
@@ -41,10 +41,9 @@ class CanadaNewBrunswickSpider( scrapy.Spider ):
 
         item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
-        item["positive"] = 45
-        item["negative"] = 2019 - 45
+        item["positive"] = 0
+        item["negative"] = 0
         item["deaths"] = 0
 
         print( item.toAsciiTable() )
-        print( "REMEMBER TO UPDATES DEATHS" )
         return item

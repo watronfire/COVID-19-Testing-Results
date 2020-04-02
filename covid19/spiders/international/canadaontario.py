@@ -11,7 +11,7 @@ class CanadaOntarioSpider( scrapy.Spider ):
     allowed_domains = ["https://www.ontario.ca/"]
     obj = ["Ontario"]
     case_categories = ["negative", "pending", "positive"]
-    names = ["Ontario, CAN"]
+    names = ["Canada, Ontario"]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
     def start_requests( self ):
@@ -33,10 +33,10 @@ class CanadaOntarioSpider( scrapy.Spider ):
 
         item["date"] = "2020-03-30"
         item["name"] = "Ontario, CAN"
-        item["negative"] = 48461
-        item["positive"] = 1706
-        item["deaths"] = 23
-        item["pending"] = 5651
+        item["negative"] = 57874-2392
+        item["positive"] = 2392
+        item["deaths"] = 37
+        item["pending"] = 3135
 
         print( item.toAsciiTable() )
         return item

@@ -14,7 +14,7 @@ class CanadaAlbertaSpider( scrapy.Spider ):
     allowed_domains = ["https://www.alberta.ca/"]
     obj = ["CanadaAlberta"]
     case_categories = ["negative", "positive", "deaths" ]
-    names = ["Alberta, CAN"]
+    names = ["Canada, Alberta"]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
     def start_requests( self ):
@@ -42,9 +42,9 @@ class CanadaAlbertaSpider( scrapy.Spider ):
 
         item["name"] = self.names[0]
         item['date'] = dt.now().strftime( "%Y-%m-%d" )
-        item["positive"] = 690
-        item["negative"] = 46057 - 690
-        item["deaths"] = 8
+        item["positive"] = 871
+        item["negative"] = 53141 - 871
+        item["deaths"] = 11
 
         print( item.toAsciiTable() )
         return item

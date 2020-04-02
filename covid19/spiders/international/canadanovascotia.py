@@ -10,7 +10,7 @@ class CanadaNovaScotiaSpider( scrapy.Spider ) :
     allowed_domains = ["https://novascotia.ca/"]
     obj = ["NovaScotia"]
     case_categories = ["positive", "pending", "negative"]
-    names = ["Nova Scotia, CAN" ]
+    names = ["Canada, Nova Scotia" ]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
     def start_requests( self ):

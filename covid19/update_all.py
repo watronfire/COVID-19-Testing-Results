@@ -11,17 +11,26 @@ from covid19.spiders.international.austria import AustriaSpider
 from covid19.spiders.international.bahrain import BahrainSpider
 from covid19.spiders.international.canadaalberta import CanadaAlbertaSpider
 from covid19.spiders.international.canadabritishcolumbia import CanadaBritishColumbiaSpider
+from covid19.spiders.international.canadamanitoba import CanadaManitobaSpider
 from covid19.spiders.international.canadanational import CanadaNationalSpider
 from covid19.spiders.international.canadanb import CanadaNewBrunswickSpider
+from covid19.spiders.international.canadanl import CanadaNLSpider
 from covid19.spiders.international.canadanovascotia import CanadaNovaScotiaSpider
+from covid19.spiders.international.canadant import CanadaNTSpider
 from covid19.spiders.international.canadaontario import CanadaOntarioSpider
 from covid19.spiders.international.canadaquebec import CanadaQuebecSpider
+from covid19.spiders.international.canadasaskatchewan import CanadaSaskatchewanSpider
+from covid19.spiders.international.canadayukon import CanadaYukonSpider
 from covid19.spiders.international.czechrebublic import CzechRebublicSpider
 from covid19.spiders.international.estonia import EstoniaSpider
 from covid19.spiders.international.hungary import HungarySpider
+from covid19.spiders.international.italy import ItalySpider
 from covid19.spiders.international.lithuania import LithuaniaSpider
 from covid19.spiders.international.malaysia import MalaysiaSpider
+from covid19.spiders.international.newzealand import NewZealandSpider
 from covid19.spiders.international.norway import NorwaySpider
+from covid19.spiders.international.palestine import PalestineSpider
+from covid19.spiders.international.philippines import PhilippinesSpider
 from covid19.spiders.international.unitedkingdom import UKSpider
 from covid19.spiders.international.vietnam import VietnamSpider
 
@@ -44,7 +53,16 @@ spiders = [ AustraliaSpider,
             LithuaniaSpider,
             MalaysiaSpider,
             EstoniaSpider,
-            NorwaySpider ]
+            NorwaySpider,
+            NewZealandSpider,
+            PalestineSpider,
+            PhilippinesSpider,
+            CanadaManitobaSpider,
+            CanadaNLSpider,
+            CanadaNTSpider,
+            CanadaSaskatchewanSpider,
+            CanadaYukonSpider,
+            ItalySpider ]
 
 for i in spiders:
     process.crawl( i )
@@ -62,7 +80,9 @@ completeness.index = dates
 for i in daily.loc[daily["date"] >= pd.to_datetime( "2020-02-20" )].iterrows():
     completeness.loc[i[1]["date"], i[1]["name"]] += 1
 completeness.index = completeness.index.date
+completeness = completeness.reindex(sorted(completeness.columns), axis=1)
 
-plt.figure( dpi=100, figsize=(10,10) )
+plt.figure( dpi=100, figsize=(15,10) )
 sns.heatmap( completeness, vmin=0 )
+plt.tight_layout()
 plt.savefig( '/Users/natem/Dropbox (Scripps Research)/Personal/Code/Python/crawl-covid19-cases/images/completeness.png' )
