@@ -30,6 +30,7 @@ class AustriaSpider(scrapy.Spider):
 
         total = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p[2]/text()' ).get()
         total = total.replace( ".", "" )
+        total = total.split( " (" )[0]
 
         deaths = response.xpath( '/html/body/div[3]/div/div/div/div[2]/main/p[4]/text()[2]' ).get()
         deaths = deaths.split( "," )[0]

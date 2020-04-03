@@ -42,9 +42,9 @@ class CanadaAlbertaSpider( scrapy.Spider ):
 
         item["name"] = self.names[0]
         item['date'] = dt.now().strftime( "%Y-%m-%d" )
-        item["positive"] = 871
-        item["negative"] = 53141 - 871
-        item["deaths"] = 11
+        item["positive"] = 968
+        item["negative"] = 57096 - 968
+        item["deaths"] = 13
 
         print( item.toAsciiTable() )
         return item

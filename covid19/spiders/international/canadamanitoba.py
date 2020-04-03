@@ -24,13 +24,13 @@ class CanadaManitobaSpider( scrapy.Spider ) :
         confirmed = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/table/tbody/tr[7]/td[2]/p/strong/text()' ).get()
         #confirmed = re.split( ' |\xa0', confirmed_paragraph )[0]
 
-        totals_paragraph = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/p[12]/text()' ).get()
+        totals_paragraph = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/p[13]/text()' ).get()
         totals = totals_paragraph.split( " " )[4]
 
         deaths = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/table/tbody/tr[7]/td[5]/p/strong/text()' ).get()
         #deaths = re.split( ' |\xa0', deaths_paragraph )[0]
 
-        date = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/p[11]/em/text()' ).get()
+        date = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/p[12]/em/text()' ).get()
         date = parse( date, fuzzy=True )
 
         item["date"] = date.strftime( "%Y-%m-%d" )

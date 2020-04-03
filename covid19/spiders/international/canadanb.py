@@ -41,8 +41,8 @@ class CanadaNewBrunswickSpider( scrapy.Spider ):
 
         item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
-        item["positive"] = 0
-        item["negative"] = 0
+        item["positive"] = 91
+        item["negative"] = 4520-91
         item["deaths"] = 0
 
         print( item.toAsciiTable() )
