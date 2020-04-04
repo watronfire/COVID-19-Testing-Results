@@ -21,7 +21,7 @@ class CanadaNTSpider( scrapy.Spider ) :
     def parse( self, response ):
         item = TestingStats()
 
-        confirmed = response.xpath( '/html/body/div[1]/div/div[5]/main/div/div[2]/div[2]/div/div/ul[1]/li[1]/strong/text()' ).get()
+        confirmed = response.xpath( '/html/body/div[1]/div/div[5]/main/div/div[2]/div[2]/div/div/ul[1]/li[1]/b/text()' ).get()
 
         negative = response.xpath( '/html/body/div[1]/div/div[5]/main/div/div[2]/div[2]/div/div/ul[1]/li[3]/strong/text()' ).get()
 

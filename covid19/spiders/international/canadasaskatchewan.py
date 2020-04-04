@@ -18,13 +18,14 @@ class CanadaSaskatchewanSpider( scrapy.Spider ) :
     def parse( self, response ):
         item = TestingStats()
 
-        confirmed = response.xpath( '/html/body/form/div[5]/div[3]/div[1]/section/table[1]/tbody/tr[8]/td[3]/strong/text()' ).get()
+        confirmed = response.xpath( '/html/body/form/div[5]/div[3]/div[1]/section/table[3]/tbody/tr[8]/td[4]/strong/text()' ).get()
         confirmed = confirmed.replace( ',', "" )
+        confirmed = confirmed.replace( "*", "" )
 
-        negative = response.xpath( '/html/body/form/div[5]/div[3]/div[1]/section/table[3]/tbody/tr[8]/td[6]/strong/text()' ).get()
+        negative = response.xpath( '/html/body/form/div[5]/div[3]/div[1]/section/table[3]/tbody/tr[8]/td[5]/strong/text()' ).get()
         negative = negative.replace( ',', "" )
 
-        date = response.xpath( '/html/body/form/div[5]/div[3]/div[1]/section/p[3]/strong/text()' ).get()
+        date = response.xpath( '/html/body/form/div[5]/div[3]/div[1]/section/p[13]/strong/text()' ).get()
         date = date.split( "(" )[-1]
         print( date )
         date = parse( date, fuzzy=True )
