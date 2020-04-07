@@ -30,15 +30,15 @@ class CanadaNationalSpider( scrapy.Spider ):
         date = date.split( " of ")[-1]
         date = parse( date, fuzzy=True )
 
-        case_table = response.xpath( '/html/body/main/div[7]/table/tbody/tr' )
+        case_table = response.xpath( '/html/body/main/div[7]/table[1]/tbody/tr' )
         for i, row in enumerate( case_table.xpath( 'td/text()' )[:3] ):
+            print( row.get() )
             if i == 0:
                 total = int( row.get().replace( ",", "" ) )
             else:
                 item_dict[self.case_categories[i]] = int( row.get().replace( ",", "" ) )
 
-        #deaths = response.xpath( '/html/body/div/table/tbody/tr[1]/td[4]/text()' ).get()
-        deaths = 109
+        deaths = response.xpath( '//*[@id="dataTable"]/tbody/tr[1]/td[4]/text()' ).get()
         item_dict["deaths"] = deaths
 
         item["date"] = date.strftime( "%Y-%m-%d" )
