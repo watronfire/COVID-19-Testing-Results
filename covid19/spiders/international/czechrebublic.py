@@ -10,7 +10,7 @@ import logging
 class CzechRebublicSpider(scrapy.Spider):
     name = 'czechrebublic'
     allowed_domains = ['https://onemocneni-aktualne.mzcr.cz']
-    names = ["Czech Rebublic"]
+    names = ["Czech Republic"]
     case_categories = ["positive", "negative"]
     custom_settings = {"LOG_LEVEL" : logging.ERROR }
 

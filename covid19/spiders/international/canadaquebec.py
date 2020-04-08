@@ -12,31 +12,30 @@ from dateutil.parser import parse
 
 class CanadaQuebecSpider( scrapy.Spider ):
     name = "canadaquebec"
-    allowed_domains = ["https://www.msss.gouv.qc.ca/professionnels/maladies-infectieuses/coronavirus-2019-ncov/"]
+    allowed_domains = ["https://www.quebec.ca"]
     obj = ["CanadaQuebec"]
     case_categories = ["negative", "positive", "deaths" ]
-    names = ["Quebec, Canada"]
+    names = ["Canada, Quebec"]
     custom_settings = { "LOG_LEVEL" : logging.ERROR }
 
     def start_requests( self ):
-        yield scrapy.Request( "https://www.msss.gouv.qc.ca/professionnels/maladies-infectieuses/coronavirus-2019-ncov/", callback=self.parse )
+        yield scrapy.Request( "https://www.quebec.ca/sante/problemes-de-sante/a-z/coronavirus-2019/", callback=self.parse )
 
     def parse( self, response ) :
         item = TestingStats()
 
         item_dict = { "name" : self.names[0] }
 
-        date = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[5]/p[1]/text()' ).get()
-        date = date.replace( "mars", "March" )
+        date = response.xpath( '/html/body/div[2]/div[3]/div/div/div/div[3]/div/div/div/p/text()' ).get()
+        date = date.replace( "avril", "April" )
         date = parse( date, fuzzy=True )
 
-        positive = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[5]/ul[1]/li[1]/text()' ).get()
-        positive = "".join( re.split( ' |\xa0', positive )[:2] )
+        positive = "".join( i.get() for i in response.xpath( '/html/body/div[2]/div[3]/div/div/div/div[4]/div[1]/div/div/div/p[2]/text()' ) )
 
-        negative = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[5]/ul[1]/li[4]/text()' ).get()
+        negative = response.xpath( '/html/body/div[2]/div[3]/div/div/div/div[4]/div[2]/div/div/div/p[2]/text()' ).get()
         negative = "".join( re.split( ' |\xa0', negative )[:2] )
 
-        deaths = response.xpath( '/html/body/main/div[2]/div/section/div/div[1]/div[5]/ul/li[2]/text()' ).get()
+        deaths = response.xpath( '/html/body/div[2]/div[3]/div/div/div/div[4]/div[4]/div/div/div/p[2]/text()' ).get()
         deaths = re.split( ' |\xa0', deaths )[0]
 
         item["date"] = date.strftime( "%Y-%m-%d" )

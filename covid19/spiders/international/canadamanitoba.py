@@ -25,9 +25,9 @@ class CanadaManitobaSpider( scrapy.Spider ) :
         #confirmed = re.split( ' |\xa0', confirmed_paragraph )[0]
 
         totals_paragraph = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/p[11]/text()' ).get()
-        totals = totals_paragraph.split( "," )[-1]
+        totals = totals_paragraph.replace( ",", "" )
 
-        totals = "".join( totals.split( " " )[1:3] )
+        totals = totals.split( " " )[4]
         print( totals )
 
         deaths = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/table/tbody/tr[7]/td[5]/p/strong/text()' ).get()
