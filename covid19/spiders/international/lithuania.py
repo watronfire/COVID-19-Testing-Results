@@ -22,7 +22,7 @@ class LithuaniaSpider(scrapy.Spider):
 
         date = dt.now()
 
-        positive = response.xpath( '//*[@id="module_Structure"]/div[1]/div[2]/div[3]/div[3]/ul/li[1]/span/strong/text()' ).get()
+        positive = response.xpath( '/html/body/div[1]/div[2]/div[3]/div[3]/ul/li[1]/span/b/text()' ).get()
 
         total = response.xpath( '/html/body/div[1]/div[2]/div[3]/div[3]/ul/li[6]/span/text()' ).get()
         total = total.split( ":" )[-1]

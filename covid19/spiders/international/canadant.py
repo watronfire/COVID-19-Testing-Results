@@ -30,7 +30,7 @@ class CanadaNTSpider( scrapy.Spider ) :
         #deaths_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/ul/li[2]/text()' ).get()
         #deaths = re.split( ' |\xa0', deaths_paragraph )[0]
 
-        date = response.xpath( '/html/body/div[1]/div/div[5]/main/div/div[2]/div[2]/div/div/h2[1]/text()' ).get()
+        date = response.xpath( '/html/body/div[1]/div/div[5]/main/div/div[2]/div[2]/div/div/h3[1]/text()' ).get()
         date = parse( date, fuzzy=True )
         #date = dt.strptime( date, "\xa0%B %d,\xa0%Y.\xa0" )
 

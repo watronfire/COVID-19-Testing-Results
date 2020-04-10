@@ -22,11 +22,11 @@ class CanadaBritishColumbiaSpider( scrapy.Spider ) :
     def parse( self, response ):
         item = TestingStats()
 
-        confirmed_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[1]/strong/text()' ).get()
+        confirmed_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li/text()' ).get()
         confirmed = re.split( ' |\xa0', confirmed_paragraph )[0]
         confirmed = confirmed.replace( ",", '' )
 
-        totals_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/li[2]/text()' ).get()
+        totals_paragraph = response.xpath( '/html/body/form/div[5]/div/span/div[1]/div/div/div[3]/article/div/div/div[2]/div[1]/div/ul/ul/li[4]/text()' ).get()
         totals = re.split( ' |\xa0', totals_paragraph )[0]
         totals = totals.replace( ",", "" )
 

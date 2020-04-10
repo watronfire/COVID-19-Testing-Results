@@ -9,7 +9,7 @@ from dateutil.parser import parse
 class AustraliaSpider( scrapy.Spider ) :
 
     name = "australia"
-    allowed_domains = ["https://health.act.gov.au"]
+    allowed_domains = ["https://www.covid19.act.gov.au/"]
     obj = ["AustraliaCapital"]
     case_categories = ["positive", "pending", "negative"]
     names = ["Australia Capital" ]
@@ -17,28 +17,27 @@ class AustraliaSpider( scrapy.Spider ) :
 
 
     def start_requests( self ):
-        yield scrapy.Request( "https://www.covid19.act.gov.au/updates/confirmed-case-information", callback=self.parse )
+        yield scrapy.Request( "https://www.covid19.act.gov.au/home", callback=self.parse )
 
     def parse( self, response ):
         item = TestingStats()
-        positive = response.xpath( '/html/body/main/div[2]/div[2]/table[1]/tbody/tr/td[1]/text()' ).get()
+        positive = response.xpath( '/html/body/main/div[2]/div/div/div[1]/div/div[3]/div/div[1]/table/tr/td[2]/text()' ).get()
         positive = positive.strip()
-        positive = positive.replace( "*", "" )
 
-        negative = response.xpath( '/html/body/main/div[2]/div[2]/table[1]/tbody/tr/td[2]/text()' ).get()
+        negative = response.xpath( '/html/body/main/div[2]/div/div/div[1]/div/div[3]/div/div[2]/table/tr/td[2]/text()' ).get()
         negative = negative.strip()
+        negative = negative.replace( ",", "" )
 
-        date = response.xpath( '/html/body/div[3]/text()[2]' ).get()
+        date = response.xpath( '/html/body/main/div[2]/div/div/div[1]/div/div[2]/p/text()' ).get()
         date = parse( date, fuzzy=True )
 
-        deaths = response.xpath( "/html/body/main/div[2]/div[2]/table[1]/tbody/tr/td[4]/text()" ).get()
-        deaths = deaths.strip()
+        #deaths = response.xpath( "/html/body/main/div[2]/div[2]/table[1]/tbody/tr/td[4]/text()" ).get()
+        #exitdeaths = deaths.strip()
 
         item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
         item["positive"] = positive
         item["negative"] = negative
-        item["deaths"] = deaths
         print( item.toAsciiTable() )
         return item
 

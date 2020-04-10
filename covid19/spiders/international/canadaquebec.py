@@ -31,6 +31,7 @@ class CanadaQuebecSpider( scrapy.Spider ):
         date = parse( date, fuzzy=True )
 
         positive = "".join( i.get() for i in response.xpath( '/html/body/div[2]/div[3]/div/div/div/div[4]/div[1]/div/div/div/p[2]/text()' ) )
+        positive = "".join( re.split( ' |\xa0', positive )[:2] )
 
         negative = response.xpath( '/html/body/div[2]/div[3]/div/div/div/div[4]/div[2]/div/div/div/p[2]/text()' ).get()
         negative = "".join( re.split( ' |\xa0', negative )[:2] )
