@@ -18,22 +18,23 @@ class HungarySpider(scrapy.Spider):
     def parse(self, response):
         item = TestingStats()
 
-        date = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[1]/section/div/p/text()' ).get()
+        date = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div/div[1]/section/div/p/text()' ).get()
         date = parse( date, fuzzy=True )
 
-        positive = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[2]/div[1]/div/span/div/span[1]/text()' ).get()
+        positive = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div/div[2]/div[1]/div/span/div/span[1]/text()' ).get()
+        positive = positive.replace( " ", "" )
 
-        total = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[2]/div[5]/div/span/div/span[1]/text()' ).get()
+        total = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div/div[2]/div[5]/div/span/div/span[1]/text()' ).get()
         total = total.replace( " ", "" )
 
-        deaths = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[2]/div[3]/div/span/div/span[1]/text()' ).get()
+        #deaths = response.xpath( '/html/body/div[1]/div/section/div/section[2]/div/div[1]/div[2]/div[1]/div[2]/div[3]/div/span/div/span[1]/text()' ).get()
 
         item["date"] = date.strftime("%Y-%m-%d")
         item["name"] =  self.names[0]
         item["positive"] = int( positive )
         item["negative"] = int( total ) - int( positive )
         #item["deaths"] = int( deaths )
-        item["deaths"] = 16
+        #item["deaths"] = ''
 
         print( item.toAsciiTable() )
         return item

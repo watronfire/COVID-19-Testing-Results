@@ -25,10 +25,9 @@ class CanadaManitobaSpider( scrapy.Spider ) :
         #confirmed = re.split( ' |\xa0', confirmed_paragraph )[0]
 
         totals_paragraph = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/p[11]/text()' ).get()
-        totals = totals_paragraph.replace( ",", "" )
-
-        totals = totals.split( " " )[4]
-        print( totals )
+        totals = "".join( totals_paragraph.split( "," )[1:] )
+        total = "".join( totals.split( ' ' )[1:3] )
+        print( total )
 
         deaths = response.xpath( '/html/body/div[4]/div/div/div[3]/div[1]/div/table/tbody/tr[7]/td[5]/p/strong/text()' ).get()
         #deaths = re.split( ' |\xa0', deaths_paragraph )[0]
@@ -39,7 +38,7 @@ class CanadaManitobaSpider( scrapy.Spider ) :
         item["date"] = date.strftime( "%Y-%m-%d" )
         item["name"] = self.names[0]
         item["positive"] = confirmed
-        item["negative"] = int( totals.replace( ",", "" ) ) - int( confirmed.replace( ",", "" ) )
+        item["negative"] = int( total ) - int( confirmed )
         item["deaths"] = deaths
         print( item.toAsciiTable() )
         return item

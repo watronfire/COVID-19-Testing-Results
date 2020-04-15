@@ -22,12 +22,12 @@ class MalaysiaSpider(scrapy.Spider):
 
         date = dt.now()
 
-        data_table = response.xpath( '//*[@id="container_content"]/div[1]/center[1]/table/tbody' )
+        data_table = response.xpath( '/html/body/div/div[2]/div/div/div/div[2]/div/div[2]/div/div[1]/center[1]/table/tbody' )
 
         for j, i in enumerate( data_table.xpath( 'tr' )[:3] ):
             item[self.case_categories[j]] = i.xpath( "td[2]/span/text()" ).get()
 
-        item["deaths"] = response.xpath( '//*[@id="container_content"]/div[1]/center[3]/table/tbody/tr[3]/td[2]/span/text()' ).get()
+        item["deaths"] = response.xpath( '/html/body/div/div[2]/div/div/div/div[2]/div/div[2]/div/div[1]/center[2]/table/tbody/tr[3]/td[2]/span/text()' ).get()
 
         print( item.toAsciiTable() )
         return item

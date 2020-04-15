@@ -23,15 +23,15 @@ class CanadaAlbertaSpider( scrapy.Spider ):
     def parse( self, response ) :
         item = TestingStats()
 
-        confirmed = response.xpath( '/html/body/main/div/div/div/table/tbody/tr[2]/td[1]/text()' ).get()
+        confirmed = response.xpath( '/html/body/main/div[1]/div/div/table/tbody/tr[2]/td[1]/text()' ).get()
         confirmed = confirmed.replace( ",", "" )
 
-        deaths= response.xpath( '/html/body/main/div/div/div/table/tbody/tr[2]/td[2]/text()' ).get()
+        deaths= response.xpath( '/html/body/main/div[1]/div/div/table/tbody/tr[2]/td[2]/text()' ).get()
 
-        totals = response.xpath( '/html/body/main/div/div/div/table/tbody/tr[2]/td[4]/text()' ).get()
+        totals = response.xpath( '/html/body/main/div[1]/div/div/table/tbody/tr[2]/td[4]/text()' ).get()
         totals = totals.replace( ",", '' )
 
-        date = response.xpath( '/html/body/main/div/div/div/table/caption/em/text()' ).get()
+        date = response.xpath( '/html/body/main/div[1]/div/div/table/caption/text()' ).get()
         date = parse( date, fuzzy=True )
 
         item["name"] = self.names[0]

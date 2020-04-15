@@ -27,8 +27,8 @@ class LithuaniaSpider(scrapy.Spider):
         total = response.xpath( '/html/body/div[1]/div[2]/div[3]/div[3]/ul/li[6]/span/text()' ).get()
         total = total.split( ":" )[-1]
 
-        deaths = response.xpath( '/html/body/div[1]/div[2]/div[3]/div[3]/ul/li[3]/span/b/text()' ).get()
-        deaths = re.split( " |\xa0", deaths )[1]
+        deaths = response.xpath( '/html/body/div/div[2]/div[3]/div[3]/ul/li[3]/span[2]/b/text()' ).get()
+        #deaths = re.split( " |\xa0", deaths )[1]
 
         item["date"] = date.strftime("%Y-%m-%d")
         item["name"] =  self.names[0]

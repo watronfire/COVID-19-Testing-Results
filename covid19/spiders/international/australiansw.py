@@ -29,10 +29,10 @@ class AustraliaNSWSpider( scrapy.Spider ) :
         #confirmed = confirmed.replace( "*", "" )
         #pending = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[3]/td/text()' ).get()
         #pending = pending.replace( ",", "" )
-        negative = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[3]/td[2]/text()' ).get()
+        negative = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[4]/td[2]/text()' ).get()
         negative = negative.replace( ",", "" )
 
-
+        deaths = response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[3]/table[1]/tbody/tr[3]/td[2]/text()' ).get()
 
         date =  response.xpath( '/html/body/form/div[2]/div[2]/div/div[3]/div[2]/div[1]/div/text()' ).get()
         date = date.strip()
@@ -42,6 +42,7 @@ class AustraliaNSWSpider( scrapy.Spider ) :
         item["name"] = self.names[0]
         item["positive"] = confirmed.strip()
         item["negative"] = negative.strip()
+        item["deaths"] = deaths
         #item["pending"] = pending
         print( item.toAsciiTable() )
         return item

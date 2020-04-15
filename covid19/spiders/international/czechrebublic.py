@@ -26,12 +26,12 @@ class CzechRebublicSpider(scrapy.Spider):
         print( date )
 
         positive = response.xpath( '/html/body/main/div/div[1]/div[1]/div[2]/div/p[2]/text()' ).get()
-        positive = positive.replace( " ", "" )
+        positive = "".join( re.split( ' |\xa0', positive ) )
 
         total = response.xpath( '/html/body/main/div/div[1]/div[1]/div[1]/div/p[2]/text()' ).get()
         total = total.replace( ' ', '' )
 
-        deaths = response.xpath( '/html/body/main/div/div[1]/div[1]/div[4]/div/p[2]/text()' ).get()
+        deaths = response.xpath( '/html/body/main/div/div[1]/div[1]/div[6]/div/p[2]/text()' ).get()
 
         item["date"] = date.strftime("%Y-%m-%d")
         item["name"] =  self.names[0]
@@ -42,3 +42,4 @@ class CzechRebublicSpider(scrapy.Spider):
         print( item.toAsciiTable() )
         return item
 
+        # have an open dataset at https://onemocneni-aktualne.mzcr.cz/api/v1/covid-19
