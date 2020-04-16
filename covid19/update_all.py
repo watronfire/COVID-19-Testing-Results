@@ -6,7 +6,6 @@ import numpy as np
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from covid19.spiders.international.australiacapital import AustraliaSpider
-from covid19.spiders.international.australiansw import AustraliaNSWSpider
 from covid19.spiders.international.austria import AustriaSpider
 from covid19.spiders.international.bahrain import BahrainSpider
 from covid19.spiders.international.canadaalberta import CanadaAlbertaSpider
@@ -37,7 +36,6 @@ from covid19.spiders.international.vietnam import VietnamSpider
 
 process = CrawlerProcess( get_project_settings() )
 spiders = [ AustraliaSpider,
-            AustraliaNSWSpider,
             AustriaSpider,
             BahrainSpider,
             CanadaAlbertaSpider,
